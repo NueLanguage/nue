@@ -1,0 +1,23 @@
++ addition
+- subtraction
+* multiplication
+/ division
+^ to the power of
+
+= equal
+< less than
+> greater than
+<= less than or equal
+>= greater than or equal
+
+! NOT
+& AND
+
+{
+}
+(
+)
+[
+]
+
+,
