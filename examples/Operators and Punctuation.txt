@@ -1,17 +1,23 @@
-+ addition
++ addition or concatenation
 - subtraction
 * multiplication
 / division
-^ to the power of
+^ to the power of (exponent)
 
-= equal
+= assignment
+-> function return(s)
+
+== equal to
 < less than
 > greater than
 <= less than or equal
 >= greater than or equal
+!= NOT equal
 
 ! NOT
 & AND
+|| OR
+| XOR
 
 {
 }
@@ -21,3 +27,5 @@
 ]
 
 ,
+.
+;
