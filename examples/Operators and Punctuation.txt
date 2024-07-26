@@ -1,3 +1,10 @@
+// comment
+//#
+multi
+line
+comment
+#//
+
 + addition or concatenation
 - subtraction
 * multiplication
@@ -13,6 +20,11 @@
 <= less than or equal
 >= greater than or equal
 != NOT equal
+
++= add to self
+-= subtract from self
+
+# length
 
 ! NOT
 & AND
