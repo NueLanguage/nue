@@ -4,7 +4,8 @@
     },
 
     "files.associations": {
-        "*.nu": "swift"
+        "*.nu": "swift",
+        "*.nue": "swift"
     },
     "swift.languageServer.disabled": true,
     "swift.diagnostics.disabled": true
