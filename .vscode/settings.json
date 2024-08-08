@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/._*": true,
+    },
+
+    "files.associations": {
+        "*.nu": "swift"
+    },
+    "swift.languageServer.disabled": true,
+    "swift.diagnostics.disabled": true
+}

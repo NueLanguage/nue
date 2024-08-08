@@ -12,4 +12,4 @@ Whilst we decide which license to use, please follow the following temporary ter
 - Any modifications or forks must credit the original author and be distributed under the same license.
 - The original copyright remains with Numelon Ltd.
 
-For any questions or clarifications, please make a query in the community Discord server or contact Numelon directly vie email: nue [at] numelon [dot] com
+For any questions or clarifications, please make a query in the community Discord server or contact Numelon directly vie email: hello [at] nue [dot] nu

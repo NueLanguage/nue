@@ -1,0 +1,105 @@
+// Comprehensive Nue Program showcasing all features
+
+// Import standard libraries (hypothetical since Nue's standard libraries aren't defined yet)
+import "std" // idk how were gonna do standard libraries yet but this seems like a bad idea imo
+
+// Multi-purpose function accepting any type and performing type-specific operations
+private var function analyzeInput = function(any input) -> boolean, table, [string, null] {
+    private var boolean isNull = (input == null)
+    private var table details = {}
+    private var string description = null
+
+    if type(input) == "number" {
+        details = {["type"] = "number", ["square"] = input ^ 2}
+        description = "Processed a number"
+    } elif type(input) == "string" {
+        details = {type = "string", length = #input}
+        description = "Processed a string"
+    } else {
+        details = {type = "unknown"}
+        description = null // No description for unknown types
+    }
+
+    return isNull, details, description
+}
+
+// Demonstrating variable declarations
+private var number myNumber = 42
+private var string myString = "Hello, Nue!"
+private var boolean myBoolean = true
+private var table myTable = {
+    name = "NueScript",
+    version = 1.0,
+    features = {"dynamic", "typed", "expressive"}
+}
+
+// Demonstrating control flow
+if myNumber > 20 & myString != "Test" {
+    print("Conditions met")
+}
+
+// Demonstrating loops
+for key, value in myTable {
+    print(key + ": " + tostring(value))
+}
+
+// Advanced loop with index and custom manipulation
+// this is assuming that nue will have a range function similar to python lol. not planned but a good idea i guess, its a lot better than lua's way of creating loops which need to loop a specific amount of time.
+// in nue, since were aiming for clarity, the range function, if it were to exist, would make the numbers inclusive.
+// that means, that unlike in python, if i did range(1, 9), then i would get numbers from 1 to 9, including 9. making the loop do something 9 times.
+// i am definite on inclusivity since i often see my classmates struggle in python and get confused with why their programs are doing stuff one less than they want it to do.
+// anyways, enough talk about range().
+for index in range(1, #myTable.features) {
+    print("Feature " + tostring(index) + ": " + myTable.features[index])
+}
+// however, although this method still works, it would be recommended to use an i,v for loop instead, as it gives you the index and the value instantly without having to create a range and get the values by accessing them through the key (called an index in nue)
+// nue assumes that if two variables are created for a for loop, then the first variable will be the index, and the second variable will be the value of the index (key).
+// also these variables can be called anything. can be called dogshit and hello for all i care
+// this code below achieves the same EXACT result as the for loop above
+for keyPoo, valHello in myTable.features {
+    print("Feature " + tostring(keyPoo) + ": " + valHello)
+}
+
+// Demonstrating the use of custom function with any type
+private var boolean result, table info, [string, null] feedback = analyzeInput(3.14)
+print("Analysis Result:", result)
+print("Info Table:", info)
+if feedback != null {
+    print("Feedback:", feedback)
+}
+
+// Using advanced data structures and control flows
+private var table complexData = {
+    numbers = {1, 2, 3, 4, 5},
+    calculate = function() -> number {
+        private var number sum = 0
+        for num in this.numbers {
+            sum += num
+        }
+        return sum
+    }
+}
+
+print("Sum of numbers:", complexData.calculate())
+
+// Demonstrating string manipulation and checks
+private var string reversed = reverseString(myString)
+print("Reversed String:", reversed)
+
+// Dynamic type checking and response
+if type(complexData) == "table" {
+    print("Working with a complex data structure.")
+}
+
+// Cleanup using delete
+delete(myNumber, myString, complexData)
+
+// Final demonstration of error handling and logging
+// I AM COMPLETELY UNSURE OF HOW WE WILL HANDLE EXCEPTIONS IN NUE
+try {
+    riskyOperation() // hypothetical risky operation
+} except anErrorHappened {
+    logError("An error occurred: " + anErrorHappened.message) // hypothetical logging function
+}
+
+// End of the comprehensive Nue program

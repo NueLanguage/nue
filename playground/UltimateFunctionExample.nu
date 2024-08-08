@@ -1,0 +1,17 @@
+private var function sumAndBiggerThan = function(number x, number y) -> number, [boolean, null] {
+    private var number sum = x + y
+    
+    private var [boolean, null] bigger
+    if x < y {
+        bigger = false
+    } else if x > y {
+        bigger = true
+    } else {
+        // equal
+        bigger = null
+        print("Something catastrophically bad happened during the math. maybe bits randomly flipping because of nuclear radiation from chernobyl?? lol")
+        print("or maybe theyre just equal. my bad")
+    }
+
+    return sum, bigger
+}

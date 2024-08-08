@@ -1,7 +1,9 @@
-/playground/
+# macOS Files
+**/._*
 
-/build/
+# /playground/
 
+# Ignored files added by GitHub by default
 # Prerequisites
 *.d
 
