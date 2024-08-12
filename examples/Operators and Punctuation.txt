@@ -23,6 +23,9 @@ comment
 
 += add to self
 -= subtract from self
+*= multiply with self
+/= divide with self
+^= exponentiate with self
 
 # length
 

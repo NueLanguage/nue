@@ -1,20 +1,31 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+// definitions:
+// LHS = Left Hand Side
+// RHS = Right Hand Side
+
 // defines the types of tokens that the lexer can return
 typedef enum {
     // single character tokens
-    TOKEN_LPAREN, TOKEN_RPAREN, //  ()
+    TOKEN_LPAREN, TOKEN_RPAREN, // ()
     TOKEN_LBRACE, TOKEN_RBRACE, // {}
     TOKEN_LBRACKET, TOKEN_RBRACKET, // []
     TOKEN_COMMA, // ,
     TOKEN_DOT, // .
-    TOKEN_SEMICOLON, // ; (Optional, separates multiple statements on one line)
+    TOKEN_SEMICOLON, // ; (optional, separates multiple statements on one line)
 
     // one or two character tokens
     TOKEN_PLUS, TOKEN_MINUS, // + -
+    TOKEN_PLUS_EQ, // += (syntactic sugar for adding RHS value to LHS variable)
+    TOKEN_MINUS_EQ, // -= (syntactic sugar for subtracting RHS value from LHS variable)
+
     TOKEN_STAR, TOKEN_SLASH, // * /
+    TOKEN_STAR_EQ, // *= (syntactic sugar for multiplying LHS variable with RHS value)
+    TOKEN_SLASH_EQ, // /= (syntactic sugar for dividing LHS variable by RHS value)
+
     TOKEN_POWER, // ^ (exponentiation)
+    TOKEN_POWER_EQ, // ^= (syntactic sugar for raising LHS variable to the power of the RHS value)
 
     TOKEN_EQ, // = (assignment)
     TOKEN_EQ_EQ, // == (equal to)
@@ -31,10 +42,14 @@ typedef enum {
     TOKEN_LT_EQ, // <= (less than or equal to)
     TOKEN_GT_EQ, // >= (greater than or equal to)
 
+    TOKEN_LENGTH, // # (length operator)
+
+    TOKEN_ARROW, // -> (used for function return types)
+
     // literals
     TOKEN_IDENTIFIER, // variable names, etc
     TOKEN_NUMBER, // numbers like 82374875 or 3.14159
-    TOKEN_STRING, // strings like "hello, world!"
+    TOKEN_STRING, // strings like "hello, world"
 
     // keywords
     TOKEN_PRIVATE, TOKEN_VAR, TOKEN_ALIAS,
@@ -53,8 +68,8 @@ typedef enum {
     TOKEN_FUNCTION, // "function" keyword, type, and constructor for new functions
 
     // type keywords
-    TOKEN_BOOLEAN,
     TOKEN_TABLE,
+    TOKEN_BOOLEAN,
     TOKEN_NUMBER_TYPE,
     TOKEN_STRING_TYPE,
     TOKEN_ANY, // denotes something which accepts any type
@@ -68,6 +83,7 @@ typedef enum {
 typedef struct {
     TokenType type; // the type of the token
     char *lexeme; // literal text of the token
+    void *literal; // literal value of the token
     int line; // the line number in the source file
 } Token;
 
