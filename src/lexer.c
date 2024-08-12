@@ -130,6 +130,7 @@ static Token number(Lexer* lexer) {
 
 // scan a string
 // TODO: ANSI escape sequences
+// TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
 static Token string(Lexer* lexer) {
     while (peek(lexer) != '"' && !isAtEnd(lexer)) {
         if (peek(lexer) == '\n') lexer->line++;
@@ -226,6 +227,7 @@ Token scanToken(Lexer* lexer) {
     if (isdigit(c)) return number(lexer);
 
     // handle string literals
+    // TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
     if (c == '"') return string(lexer);
 
     // handle identifiers and keywords
