@@ -59,7 +59,10 @@ static void skipWhitespace(Lexer* lexer) {
             case '/': // possible start of a comment or division operator
                 if (peekNext(lexer) == '/') {
                     advance(lexer); // consume first '/'
-                    if (peek(lexer) == '#') { // multi-line comment
+                    // TODO: changed from if (peek(lexer) == '#) {}
+                    if (peekNext(lexer) == '#') { // multi-line comment
+                        advance(lexer); // consume second '/'
+                        // TODO: added an extra consumption here
                         advance(lexer); // consume '#'
                         while (!isAtEnd(lexer) && !(peek(lexer) == '#' && peekNext(lexer) == '/' && lexer->current[2] == '/')) {
                             if (peek(lexer) == '\n') lexer->line++;
@@ -148,6 +151,8 @@ static Token string(Lexer* lexer) {
 // scan identifier or keyword
 // TODO: get variables names and put them into the lexeme or literal property
 static Token identifier(Lexer* lexer) {
+    // you might question whether the identifier function allows identifiers to start with a number...
+    // however thats not the case because in the scanToken we initially check with isalpha() which doesnt allow numbers
     while (isalnum(peek(lexer)) || peek(lexer) == '_') advance(lexer);
 
     // check if the identifier is a keyword
@@ -157,6 +162,9 @@ static Token identifier(Lexer* lexer) {
     if (length == 5 && strncmp(lexer->start, "alias", 5) == 0) return makeToken(lexer, TOKEN_ALIAS, NULL);
     if (length == 2 && strncmp(lexer->start, "if", 2) == 0) return makeToken(lexer, TOKEN_IF, NULL);
     if (length == 4 && strncmp(lexer->start, "else", 4) == 0) return makeToken(lexer, TOKEN_ELSE, NULL);
+    // TODO: detect "else if" early on by combining them into one token
+    // simplifies for later stages
+    // if (length == 7 && strncmp(lexer->start, "else if", 7) == 0) return makeToken(lexer, TOKEN_ELSEIF, NULL);
     if (length == 3 && strncmp(lexer->start, "for", 3) == 0) return makeToken(lexer, TOKEN_FOR, NULL);
     if (length == 2 && strncmp(lexer->start, "in", 2) == 0) return makeToken(lexer, TOKEN_IN, NULL);
     if (length == 5 && strncmp(lexer->start, "while", 5) == 0) return makeToken(lexer, TOKEN_WHILE, NULL);
