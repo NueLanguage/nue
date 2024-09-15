@@ -25,7 +25,7 @@ private var function reverseString = function(string original) -> string {
 
 // Use table to store multiple types of data
 private var table myTable = {
-    name = "NuLang User",
+    name = "nue User",
     age = 30,
     interests = {"coding", "reading", "gaming"},
     description = function() -> string {
@@ -50,14 +50,14 @@ private var string userProfile = myTable.description()
 print("Profile Description:", userProfile)
 
 // Analyzing a text sample
-private var string sampleText = "This is a sample text for NuLang, designed to showcase the language's capabilities and flexibility."
+private var string sampleText = "This is a sample text for nue, designed to showcase the language's capabilities and flexibility."
 private var number textLength, string textCategory = analyzeText(sampleText)
 print("Sample Text Analysis:")
 print("Text Length:", textLength)
 print("Category:", textCategory)
 
 // Demonstrating text reversal
-private var string originalText = "Hello, NuLang!"
+private var string originalText = "Hello, nue!"
 private var string reversedText = reverseString(originalText)
 print("Original Text:", originalText)
 print("Reversed Text:", reversedText)

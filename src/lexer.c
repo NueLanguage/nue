@@ -39,7 +39,6 @@ static char peekNext(Lexer* lexer) {
 }
 
 // skip whitespace and comments
-// TODO: multiline comments still not detected properly. advances only twice instead of three times on first / encounter, fix later
 static void skipWhitespace(Lexer* lexer) {
     // for non-c programmers, this is an infinite loop.
     // (in our case its not entirely infinite because we return at some point anyways)
@@ -132,8 +131,11 @@ static Token number(Lexer* lexer) {
 }
 
 // scan a string
-// TODO: ANSI escape sequences
+// TODO: escape sequences
 // TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
+// TODO: maybe dont have a separate way of defining multiline strings, e.g. [[[]]] in lua. just allow both single and double quotes to be multiline?
+// i mean theoretically that would work and it wouldnt matter because the lexer sees it normally
+// follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
 static Token string(Lexer* lexer) {
     while (peek(lexer) != '"' && !isAtEnd(lexer)) {
         if (peek(lexer) == '\n') lexer->line++;
@@ -162,9 +164,6 @@ static Token identifier(Lexer* lexer) {
     if (length == 5 && strncmp(lexer->start, "alias", 5) == 0) return makeToken(lexer, TOKEN_ALIAS, NULL);
     if (length == 2 && strncmp(lexer->start, "if", 2) == 0) return makeToken(lexer, TOKEN_IF, NULL);
     if (length == 4 && strncmp(lexer->start, "else", 4) == 0) return makeToken(lexer, TOKEN_ELSE, NULL);
-    // TODO: detect "else if" early on by combining them into one token
-    // simplifies for later stages
-    // if (length == 7 && strncmp(lexer->start, "else if", 7) == 0) return makeToken(lexer, TOKEN_ELSEIF, NULL);
     if (length == 3 && strncmp(lexer->start, "for", 3) == 0) return makeToken(lexer, TOKEN_FOR, NULL);
     if (length == 2 && strncmp(lexer->start, "in", 2) == 0) return makeToken(lexer, TOKEN_IN, NULL);
     if (length == 5 && strncmp(lexer->start, "while", 5) == 0) return makeToken(lexer, TOKEN_WHILE, NULL);
