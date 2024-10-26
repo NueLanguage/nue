@@ -21,11 +21,11 @@ comment
 >= greater than or equal
 != NOT equal
 
-+= add to self
--= subtract from self
-*= multiply with self
-/= divide with self
-^= exponentiate with self
++= add to and assign to self
+-= subtract from and assign to self
+*= multiply with and assign to self
+/= divide by and assign to self
+^= exponentiate with and assign to self
 
 # length
 

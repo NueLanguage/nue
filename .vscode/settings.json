@@ -7,6 +7,8 @@
         "*.nu": "swift",
         "*.nue": "swift"
     },
-    "swift.languageServer.disabled": true,
-    "swift.diagnostics.disabled": true
+
+    "swift.sourcekit-lsp.disable": true,
+    "swift.diagnostics": false,
+    "swift.disableAutoResolve": true
 }
