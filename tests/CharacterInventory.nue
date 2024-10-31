@@ -1,0 +1,75 @@
+// Character inventory system in Nue
+private var [table, number, null] tables = {}
+
+private var table Character = {
+    name = "Arin",
+    level = 12,
+    health = 100,
+    inventory = {
+        {itemName = "Potion", quantity = 3},
+        {itemName = "Sword", quantity = 1},
+        {itemName = "Shield", quantity = 1},
+    },
+
+    // Function to add items to the inventory
+    addItem = function(string itemName, number quantity) -> null {
+        private var boolean itemFound = false
+        for item in this.inventory {
+            if item.itemName == itemName {
+                item.quantity += quantity
+                itemFound = true
+                //break // HOW DID I FORGET TO IMPLEMENT THE BREAK KEYWORD BRUH??
+            }
+        }
+        if !itemFound {
+            tables.insert(this.inventory, {itemName = itemName, quantity = quantity})
+        }
+    },
+
+    // Function to remove an item or decrease its quantity
+    removeItem = function(string itemName, number quantity) -> boolean, string {
+        for item in this.inventory {
+            if item.itemName == itemName {
+                if item.quantity > quantity {
+                    item.quantity -= quantity
+                    return true, itemName + " quantity decreased."
+                } else if item.quantity == quantity {
+                    // Removes item entirely
+                    tables.remove(this.inventory, item)
+                    return true, itemName + " removed from inventory."
+                } else {
+                    return false, "Not enough " + itemName + " in inventory."
+                }
+            }
+        }
+        return false, itemName + " not found in inventory."
+    },
+
+    // Function to display inventory contents
+    displayInventory = function() -> null {
+        print("Inventory for " + this.name + ":")
+        for item in this.inventory {
+            print("- " + item.itemName + ": " + item.quantity)
+        }
+    }
+}
+
+// Testing the inventory functions
+Character.displayInventory()
+print("Adding 2 Potions:")
+Character.addItem("Potion", 2)
+Character.displayInventory()
+
+print("Removing 1 Sword:")
+private var result, message = Character.removeItem("Sword", 1)
+print(message)
+Character.displayInventory()
+
+print("Attempting to remove 5 Shields:")
+result, message = Character.removeItem("Shield", 5)
+print(message)
+Character.displayInventory()
+
+print("Adding a new item, 'Magic Scrolls':")
+Character.addItem("Magic Scroll", 4)
+Character.displayInventory()

@@ -90,7 +90,7 @@ static void skipWhitespace(Lexer* lexer) {
 // TODO: concerns about this function
 static bool match(Lexer* lexer, char expected) {
     if (isAtEnd(lexer)) return false;
-    if (*lexer->current != expected) return false;
+    if (peek(lexer) != expected) return false;
     lexer->current++;
     return true;
 }
@@ -118,6 +118,7 @@ static Token errorToken(Lexer* lexer, const char* message) {
 // https://trello.com/c/SxTSWtIl
 // TODO: handle numbers differently later on. check trello board
 // TODO: handle invalid numbers like 3.14.28746.3232xerf
+// TODO: i dont think this properly handles multiple dots. Like it would probably allow 3.11.3213 which is obviously invalid. It doesnt check for multiple dots.
 static Token number(Lexer* lexer) {
     while (isdigit(peek(lexer))) advance(lexer);
     if (peek(lexer) == '.' && isdigit(peekNext(lexer))) {
@@ -136,7 +137,7 @@ static Token number(Lexer* lexer) {
 // TODO: maybe dont have a separate way of defining multiline strings, e.g. [[[]]] in lua. just allow both single and double quotes to be multiline?
 // i mean theoretically that would work and it wouldnt matter because the lexer sees it normally
 // follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
-static Token string(Lexer* lexer) {
+static Token string_old(Lexer* lexer) {
     while (peek(lexer) != '"' && !isAtEnd(lexer)) {
         if (peek(lexer) == '\n') lexer->line++;
         advance(lexer);
@@ -150,6 +151,47 @@ static Token string(Lexer* lexer) {
     return makeToken(lexer, TOKEN_STRING, value);
 }
 
+static Token string(Lexer* lexer, char quote) {
+    bool isMultiline = false;
+    int quoteCount = 1; // it is 1 bc we have already consumed a quote
+
+    // check for triple quotes
+    if (match(lexer, quote) && match(lexer, quote)) {
+        isMultiline = true;
+        quoteCount = 3;
+    }
+
+    while (!isAtEnd(lexer)) {
+        char c = advance(lexer);
+
+        if (c == '\n') {
+            lexer->line++;
+        }
+
+        if (c == quote) {
+            int matchedQuotes = 1;
+
+            // check if we have matching closing quotes
+            while (matchedQuotes < quoteCount && peek(lexer) == quote) {
+                advance(lexer);
+                matchedQuotes++;
+            }
+
+            if (matchedQuotes == quoteCount) {
+                // STRING END (TERMINATION)
+                size_t totalLength = lexer->current - lexer->start;
+                size_t contentLength = totalLength - (2 * quoteCount);
+
+                char *value = strndup(lexer->start + quoteCount, contentLength);
+
+                return makeToken(lexer, TOKEN_STRING, value);
+            }
+        }
+    }
+
+    return errorToken(lexer, "Unterminated string");
+}
+
 // scan identifier or keyword
 // TODO: get variables names and put them into the lexeme or literal property
 static Token identifier(Lexer* lexer) {
@@ -159,7 +201,7 @@ static Token identifier(Lexer* lexer) {
 
     // check if the identifier is a keyword
     size_t length = lexer->current - lexer->start;
-    if (length == 6 && strncmp(lexer->start, "private", 6) == 0) return makeToken(lexer, TOKEN_PRIVATE, NULL);
+    if (length == 7 && strncmp(lexer->start, "private", 7) == 0) return makeToken(lexer, TOKEN_PRIVATE, NULL);
     if (length == 3 && strncmp(lexer->start, "var", 3) == 0) return makeToken(lexer, TOKEN_VAR, NULL);
     if (length == 5 && strncmp(lexer->start, "alias", 5) == 0) return makeToken(lexer, TOKEN_ALIAS, NULL);
     if (length == 2 && strncmp(lexer->start, "if", 2) == 0) return makeToken(lexer, TOKEN_IF, NULL);
@@ -235,7 +277,7 @@ Token scanToken(Lexer* lexer) {
 
     // handle string literals
     // TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
-    if (c == '"') return string(lexer);
+    if (c == '"' || c == '\'') return string(lexer, c);
 
     // handle identifiers and keywords
     if (isalpha(c) || c == '_') return identifier(lexer);

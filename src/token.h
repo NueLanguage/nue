@@ -5,9 +5,6 @@
 // LHS = Left Hand Side
 // RHS = Right Hand Side
 
-// TODO: TOKEN_ELSEIF
-// maybe detect the two words "else if" instantly in the lexer to simplify processing in later stages
-
 // defines the types of tokens that the lexer can return
 typedef enum {
     // single character tokens
@@ -56,7 +53,7 @@ typedef enum {
 
     // keywords
     TOKEN_PRIVATE, TOKEN_VAR, TOKEN_ALIAS,
-    TOKEN_IF, TOKEN_ELSE, // TOKEN_ELSEIF,
+    TOKEN_IF, TOKEN_ELSE,
     TOKEN_FOR, TOKEN_IN,
     TOKEN_WHILE,
     TOKEN_RETURN,
