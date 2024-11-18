@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "../src/lexer.h"
 #include "../src/token.h"
 
@@ -144,27 +146,32 @@ void runLexerOnInput(const char* source) {
 void runRepl(bool silent) {
     printf("Nue Lexer REPL - Type code below or 'exit' to quit.\n");
 
-    char line[1024];
-
     while (true) {
-        printf("> ");
-        if (!fgets(line, sizeof(line), stdin)) {
-            break; // eof
+        // use readline to get input with line editing capabilities (big upgrade)
+        char* line = readline("> ");
+        if (!line) {
+            break; // EOF or error
         }
 
-        // remove trailing newline
-        line[strcspn(line, "\n")] = '\0';
+        if (strcmp(line, "exit") == 0) {
+            free(line);
+            break;
+        }
 
-        if (strcmp(line, "exit") == 0 || strcmp(line, "") == 0) {
-            break; // exit bc said so
+        // add non-empty lines to history
+        if (line[0] != '\0') {
+            add_history(line);
         }
 
         runLexerOnInput(line);
-        printf("\n");
+
         if (!silent) {
+            printf("\n");
             printTokenUsage();
             printf("\n");
         }
+
+        free(line);
     }
 }
 

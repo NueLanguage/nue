@@ -186,9 +186,9 @@ static Token number(Lexer* lexer) {
                 hasDot = true;
                 advance(lexer);
             } else if (c == 'e' || c == 'E') {
-                advance(lexer); // Consume 'e' or 'E'
+                advance(lexer); // consume 'e'
 
-                // Add optional sign
+                // add optional sign
                 if (peek(lexer) == '+' || peek(lexer) == '-') {
                     advance(lexer);
                 }
@@ -229,12 +229,22 @@ static Token number(Lexer* lexer) {
     char* endptr;
 
     if (isHex) {
+        if (cleanIndex <= 2) { // no digits after "0x"
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid hexadecimal number");
+        }
+
         value = (double)strtoll(cleanLexeme, &endptr, 16);
         if (*endptr != '\0') {
             free(cleanLexeme);
             return errorToken(lexer, "Invalid hexadecimal number");
         }
     } else if (isBinary) {
+        if (cleanIndex <= 2) { // no digits after "0b"
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid binary number");
+        }
+
         // manual conversion for binary
         // Q: why not just use strtoll?
         // A: because strtoll doesn't provide us with the granularity we need - we want to manually check whether it is EXPLICITLY ONLY 1s and 0s.
@@ -242,7 +252,7 @@ static Token number(Lexer* lexer) {
         // this means that binary numbers like "0b102" will be successfully converted into the number 2, since it continued converting until it reached an invalid number (not 1 or 0) and interpreted it as "0b10"
         // this is an issue because we actually want to give users an error when they wrote an invalid binary number, not just silently continue converting the number and then have people complain about weird quirks
         value = 0;
-        size_t startIndex = 2; // skip '0b'
+        size_t startIndex = 2; // skip "0b"
         for (size_t i = startIndex; i < cleanIndex; ++i) {
             char c = cleanLexeme[i];
             if (c == '0' || c == '1') {
@@ -253,6 +263,11 @@ static Token number(Lexer* lexer) {
             }
         }
     } else if (isOctal) {
+        if (cleanIndex <= 2) { // no digits after "0o"
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid octal number");
+        }
+
         value = (double)strtoll(cleanLexeme + 2, &endptr, 8);
         if (*endptr != '\0') {
             free(cleanLexeme);
