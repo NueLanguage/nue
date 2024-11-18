@@ -1,0 +1,217 @@
+{
+	"numbers": [
+		{
+			"code": "1.2345678",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "1.234568"
+			}
+		},
+
+		{
+			"code": "1.23e10",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "12300000000.000000"
+			}
+		},
+
+		{
+			"code": "100e-1",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "10.000000"
+			}
+		},
+
+		{
+			"code": "0b10",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "2.000000"
+			}
+		},
+
+		{
+			"code": "123",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "123.000000"
+			}
+		},
+
+		{
+			"code": "0.456",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "0.456000"
+			}
+		},
+
+		{
+			"code": "1e10",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "10000000000.000000"
+			}
+		},
+
+		{
+			"code": "0x1a3f",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "6719.000000"
+			}
+		},
+
+		{
+			"code": "0b1010",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "10.000000"
+			}
+		},
+
+		{
+			"code": "0o755",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid octal number"
+			}
+		},
+
+		{
+			"code": "0o764",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid octal number"
+			}
+		},
+
+		{
+			"code": "1_000_000",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "1000000.000000"
+			}
+		},
+
+		{
+			"code": "1_000_000_000",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "1000000000.000000"
+			}
+		},
+
+		{
+			"code": "1.23e-4",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "0.000123"
+			}
+		},
+
+		{
+			"code": "0.12.34",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid number format: too many decimal points"
+			}
+		},
+
+		{
+			"code": ".1.2..",
+			"expected": [
+				{
+					"type": "DOT",
+					"lexeme": ".",
+					"literal": null
+				},
+				{
+					"type": "ERROR",
+					"literal": "Invalid number format: too many decimal points"
+				}
+			]
+		},
+
+		{
+			"code": "0.12.3.",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid number format: too many decimal points"
+			}
+		},
+
+		{
+			"code": "0xg12",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid hexadecimal digit"
+			}
+		},
+
+		{
+			"code": "0xg",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid hexadecimal digit"
+			}
+		},
+
+		{
+			"code": "0x",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid hexadecimal number"
+			}
+		},
+
+		{
+			"code": "0",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "0.000000"
+			}
+		},
+
+		{
+			"code": "0000123",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "123.000000"
+			}
+		},
+
+		{
+			"code": "0b10",
+			"expected": {
+				"type": "NUMBER",
+				"literal": "2.000000"
+			}
+		},
+
+		{
+			"code": "0h",
+			"expected": [
+				{
+					"type": "NUMBER",
+					"literal": "0.000000"
+				},
+				{
+					"type": "IDENTIFIER",
+					"lexeme": "h",
+					"literal": null
+				}
+			]
+		},
+
+		{
+			"code": "0b102",
+			"expected": {
+				"type": "ERROR",
+				"literal": "Invalid binary digit"
+			}
+		}
+	]
+}

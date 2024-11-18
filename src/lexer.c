@@ -116,17 +116,159 @@ static Token errorToken(Lexer* lexer, const char* message) {
 }
 
 // https://trello.com/c/SxTSWtIl
-// TODO: handle numbers differently later on. check trello board
-// TODO: handle invalid numbers like 3.14.28746.3232xerf
-// TODO: i dont think this properly handles multiple dots. Like it would probably allow 3.11.3213 which is obviously invalid. It doesnt check for multiple dots.
+// TODO (LIKELY CANCELLED - stupid idea, also not necessary): handle numbers differently later on. check trello board.
 static Token number(Lexer* lexer) {
-    while (isdigit(peek(lexer))) advance(lexer);
-    if (peek(lexer) == '.' && isdigit(peekNext(lexer))) {
-        advance(lexer); // consume '.'
-        while (isdigit(peek(lexer))) advance(lexer);
+    // this function became so un-maintainable i've decided to actually comment it for better uhhh.. brainability?
+    bool hasDot = false;
+    bool isHex = false;
+    bool isBinary = false;
+    bool isOctal = false;
+
+    // start of the number
+    const char* numberStart = lexer->current - 1;
+
+    // handle prefixes like 0x, 0b, 0o
+    if (*numberStart == '0') {
+        char nextChar = peek(lexer);
+        if (nextChar == 'x' || nextChar == 'X') {
+            isHex = true;
+            advance(lexer); // consume 'x'
+        } else if (nextChar == 'b' || nextChar == 'B') {
+            isBinary = true;
+            advance(lexer); // consume 'b'
+        } else if (nextChar == 'o' || nextChar == 'O') {
+            isOctal = true;
+            advance(lexer); // consume 'o'
+        }
+        // there is no need to advance if its a leading zero in a decimal number
     }
-    double value = strtod(lexer->start, NULL);
-    double *literal = malloc(sizeof(double));
+
+    // main parsing loop
+    while (true) {
+        char c = peek(lexer);
+
+        if (c == '_') {
+            advance(lexer); // skip underscores
+            continue;
+        }
+
+        if (isHex) {
+            if (isxdigit(c)) {
+                advance(lexer);
+            } else if (isalnum(c)) {
+                return errorToken(lexer, "Invalid hexadecimal digit");
+            } else {
+                break;
+            }
+        } else if (isBinary) {
+            if (c == '0' || c == '1') {
+                advance(lexer);
+            } else if (isdigit(c)) {
+                return errorToken(lexer, "Invalid binary digit");
+            } else {
+                break;
+            }
+        } else if (isOctal) {
+            if (c >= '0' && c <= '7') {
+                advance(lexer);
+            } else if (isdigit(c)) {
+                return errorToken(lexer, "Invalid octal digit");
+            } else {
+                break;
+            }
+        } else {
+            if (isdigit(c)) {
+                advance(lexer);
+            } else if (c == '.') {
+                if (hasDot) {
+                    return errorToken(lexer, "Invalid number format: too many decimal points");
+                }
+                hasDot = true;
+                advance(lexer);
+            } else if (c == 'e' || c == 'E') {
+                advance(lexer); // Consume 'e' or 'E'
+
+                // Add optional sign
+                if (peek(lexer) == '+' || peek(lexer) == '-') {
+                    advance(lexer);
+                }
+
+                if (!isdigit(peek(lexer))) {
+                    return errorToken(lexer, "Invalid number format: incomplete exponent");
+                }
+
+                while (isdigit(peek(lexer))) {
+                    advance(lexer);
+                }
+                break; // exponent handled
+            } else {
+                break;
+            }
+        }
+    }
+
+    const char* lexemeEnd = lexer->current;
+
+    // build cleanLexeme without the underscores
+    // yes i know not everyone will use underscores, theres probably a better way to handle stuff like "1_000_000" because not everyone will use it
+
+    // TODO: maybe implement a bool variable at the top for detecting whether '_' has been used
+    // if so, construct cleanLexeme since this thing is literally only required for numbers that have underscores for code readability
+    size_t lexemeLength = lexemeEnd - numberStart;
+    char* cleanLexeme = malloc(lexemeLength + 1); // +1 for null terminator
+    size_t cleanIndex = 0;
+    for (const char* p = numberStart; p < lexemeEnd; p++) {
+        if (*p != '_') {
+            cleanLexeme[cleanIndex++] = *p;
+        }
+    }
+    cleanLexeme[cleanIndex] = '\0';
+
+    // finally convert the number, oh my...
+    double value = 0;
+    char* endptr;
+
+    if (isHex) {
+        value = (double)strtoll(cleanLexeme, &endptr, 16);
+        if (*endptr != '\0') {
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid hexadecimal number");
+        }
+    } else if (isBinary) {
+        // manual conversion for binary
+        // Q: why not just use strtoll?
+        // A: because strtoll doesn't provide us with the granularity we need - we want to manually check whether it is EXPLICITLY ONLY 1s and 0s.
+        // strtoll will literally just continue silently without any errors until it encounters an invalid character
+        // this means that binary numbers like "0b102" will be successfully converted into the number 2, since it continued converting until it reached an invalid number (not 1 or 0) and interpreted it as "0b10"
+        // this is an issue because we actually want to give users an error when they wrote an invalid binary number, not just silently continue converting the number and then have people complain about weird quirks
+        value = 0;
+        size_t startIndex = 2; // skip '0b'
+        for (size_t i = startIndex; i < cleanIndex; ++i) {
+            char c = cleanLexeme[i];
+            if (c == '0' || c == '1') {
+                value = value * 2 + (c - '0');
+            } else {
+                free(cleanLexeme);
+                return errorToken(lexer, "Invalid binary number");
+            }
+        }
+    } else if (isOctal) {
+        value = (double)strtoll(cleanLexeme + 2, &endptr, 8);
+        if (*endptr != '\0') {
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid octal number");
+        }
+    } else {
+        value = strtod(cleanLexeme, &endptr);
+        if (*endptr != '\0') {
+            free(cleanLexeme);
+            return errorToken(lexer, "Invalid number format");
+        }
+    }
+
+    free(cleanLexeme);
+
+    double* literal = malloc(sizeof(double));
     *literal = value;
     return makeToken(lexer, TOKEN_NUMBER, literal);
 }

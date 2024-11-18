@@ -1,0 +1,1 @@
+gcc -o lexer.test lexer.test.c ../src/lexer.c -I.

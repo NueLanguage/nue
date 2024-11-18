@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../src/lexer.h"
 #include "../src/token.h"
 
@@ -70,6 +71,8 @@ const char* tokenTypeToString(TokenType type) {
     }
 }
 
+int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
+
 void printToken(Token token) {
     printf("[Line %d] %s '%s'", token.line, tokenTypeToString(token.type), token.lexeme);
 
@@ -79,57 +82,44 @@ void printToken(Token token) {
         } else if (token.type == TOKEN_STRING) {
             printf(" ('%s')", (char*)token.literal);
         }
-    } else {
-        printf(" (null)");
-    }
+    } //else {
+        //printf(" (null)");
+    //}
     printf("\n");
 }
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <source_file.nue>\n", argv[0]);
-        return 1;
+void printUnusedTokens() {
+    printf("Unused tokens: ");
+    bool first = true;
+    for (int i = 0; i < TOKEN_TYPE_COUNT; i++) {
+        if (!usedTokenTypes[i]) {
+            if (!first) printf(", ");
+            printf("%s", tokenTypeToString(i));
+            first = false;
+        }
+    }
+    if (first) printf("None");
+    printf("\n");
+}
+
+void printTokenUsage() {
+    int uniqueTokensUsed = 0;
+    for (int i = 0; i < TOKEN_TYPE_COUNT; i++) {
+        if (usedTokenTypes[i]) uniqueTokensUsed++;
     }
 
-    // read source file
-    const char* filename = argv[1];
-    FILE* file = fopen(filename, "rb");
-    if (!file) {
-        fprintf(stderr, "Could not open source file '%s'\n", filename);
-        return 1;
-    }
+    int percentage = (uniqueTokensUsed * 100) / TOKEN_TYPE_COUNT;
 
-    // get file size
-    fseek(file, 0L, SEEK_END);
-    size_t fileSize = ftell(file);
-    rewind(file);
+    printf("You have used %d out of %d token types. (%d%%)\n", uniqueTokensUsed, TOKEN_TYPE_COUNT, percentage);
+    printUnusedTokens();
+    printf("\n");
+}
 
-    // read file into a buffer
-    char* source = (char*)malloc(fileSize + 1);
-    if (!source) {
-        fprintf(stderr, "Memory allocation failed\n");
-        fclose(file);
-        return 1;
-    }
-    fread(source, sizeof(char), fileSize, file);
-    // this isnt necessary, however we add an extra terminator just incase someone catastrophically saved without a terminator
-    source[fileSize] = '\0'; // null terminate the string
-    fclose(file);
-
-    // initialise the lexer
+void runLexerOnInput(const char* source) {
     Lexer lexer;
     initLexer(&lexer, source);
 
-    // tokenise the source code
     Token token;
-
-    // keep track of used token types
-    // init all to false
-    int usedTokenTypes[TOKEN_TYPE_COUNT];
-    memset(usedTokenTypes, 0, sizeof(usedTokenTypes));
-
-    int totalTokens = 0;
-
     do {
         token = scanToken(&lexer);
         printToken(token);
@@ -138,10 +128,8 @@ int main(int argc, char* argv[]) {
         if (token.type >= 0 && token.type < TOKEN_TYPE_COUNT) {
             usedTokenTypes[token.type] = 1;
         }
-
-        totalTokens++;
-
-        // free the token's lexeme and literal if needed
+        
+        // free token resources
         free(token.lexeme);
         if (token.literal != NULL) {
             if (token.type == TOKEN_NUMBER) {
@@ -151,17 +139,95 @@ int main(int argc, char* argv[]) {
             }
         }
     } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
+}
 
-    int uniqueTokensUsed = 0;
-    for (int i = 1; i < TOKEN_TYPE_COUNT; i++) {
-        if (usedTokenTypes[i]) {
-            uniqueTokensUsed++;
+void runRepl(bool silent) {
+    printf("Nue Lexer REPL - Type code below or 'exit' to quit.\n");
+
+    char line[1024];
+
+    while (true) {
+        printf("> ");
+        if (!fgets(line, sizeof(line), stdin)) {
+            break; // eof
+        }
+
+        // remove trailing newline
+        line[strcspn(line, "\n")] = '\0';
+
+        if (strcmp(line, "exit") == 0 || strcmp(line, "") == 0) {
+            break; // exit bc said so
+        }
+
+        runLexerOnInput(line);
+        printf("\n");
+        if (!silent) {
+            printTokenUsage();
+            printf("\n");
+        }
+    }
+}
+
+void runFile(const char* filename, bool silent) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        fprintf(stderr, "Could not open source file '%s'\n", filename);
+        exit(1);
+    }
+
+    // read entire file
+    fseek(file, 0L, SEEK_END);
+    size_t fileSize = ftell(file);
+    rewind(file);
+
+    char* source = (char*)malloc(fileSize + 1);
+    if (!source) {
+        fprintf(stderr, "Memory allocation failed\n");
+        fclose(file);
+        exit(1);
+    }
+    fread(source, sizeof(char), fileSize, file);
+
+    // this isnt necessary, however we add an extra terminator just incase someone catastrophically saved without a terminator
+    source[fileSize] = '\0'; // null terminate the string
+    fclose(file);
+
+    runLexerOnInput(source);
+    free(source);
+
+    if (!silent) {
+        // print stats
+        printf("--------------------------------------------------\n");
+        printTokenUsage();
+    }
+}
+
+int main(int argc, char* argv[]) {
+    bool silent = false;
+    const char* filename = NULL;
+
+    // Simple argument parsing
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--silent") == 0) {
+            silent = true;
+        } else {
+            filename = argv[i];
         }
     }
 
-    printf("Used %d out of %d token types.\n", uniqueTokensUsed, TOKEN_TYPE_COUNT);
+    if (filename == NULL) {
+        printf("No source file provided. Do you want to start REPL mode? (y/n): ");
+        char response;
+        if (scanf(" %c", &response) && (response == 'y' || response == 'Y')) {
+            getchar(); // clear newline from input buffer
+            runRepl(silent);
+        } else {
+            printf("Exiting.\n");
+            return 0;
+        }
+    } else {
+        runFile(filename, silent);
+    }
 
-    // Clean up
-    free(source);
     return 0;
 }

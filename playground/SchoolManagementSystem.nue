@@ -92,11 +92,12 @@ private var function main = function() -> null {
     delete(myNumber, myString, complexData)
 
     // Final demonstration of error handling and logging
-    try {
-        riskyOperation() // hypothetical risky operation
-    } except error {
-        print("An error occurred: " + error)
-    }
+    // "try" is a debated keyword
+    //try {
+        //riskyOperation() // hypothetical risky operation
+    //} except error {
+        //print("An error occurred: " + error)
+    //}
 }
 
 // Execute the main function
@@ -185,14 +186,14 @@ for studentId in physicsStudents {
 }
 
 // Demonstrating error handling in course addition
-try {
-    var boolean courseAdded, string addMessage = addCourse("Chemistry", "f9999", 3) // Invalid instructor ID
-    if !courseAdded {
-        logError(addMessage) // Use error() to trigger an exception if the course is not added successfully
-    }
-} except error {
-    print("An error occurred while adding a course: " + error)
-}
+//try {
+    //var boolean courseAdded, string addMessage = addCourse("Chemistry", "f9999", 3) // Invalid instructor ID
+    //if !courseAdded {
+        //logError(addMessage) // Use error() to trigger an exception if the course is not added successfully
+    //}
+//} except error {
+    //print("An error occurred while adding a course: " + error)
+//}
 
 // Demonstrating cleanup and re-initialization
 delete(courses, students, faculty)

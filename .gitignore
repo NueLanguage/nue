@@ -1,4 +1,7 @@
 # /playground/
+# ignore compiled files in /tests
+/tests/*.test
+/tests/*.test.exe
 
 # macOS Files
 **/._*
