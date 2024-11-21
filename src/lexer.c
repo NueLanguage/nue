@@ -14,7 +14,7 @@ void initLexer(Lexer* lexer, const char* source) {
 
 // reminder that in c, there is a difference between ' (single quotes) and " (double quotes)
 // 'a' - single character literal
-// "a" - string literal containing an 'a' abd a null terminator. this is a 2 character array
+// "a" - string literal containing an 'a' and a null terminator. this is a 2 character array.
 
 // check if the lexer has reached the end of the source code
 static bool isAtEnd(Lexer* lexer) {
@@ -116,7 +116,7 @@ static Token errorToken(Lexer* lexer, const char* message) {
 }
 
 // https://trello.com/c/SxTSWtIl
-// TODO (LIKELY CANCELLED - stupid idea, also not necessary): handle numbers differently later on. check trello board.
+// TODO (LIKELY CANCELLED - stupid idea, also not necessary and chaotic at the deeper level): handle numbers differently later on. check trello board.
 static Token number(Lexer* lexer) {
     // this function became so un-maintainable i've decided to actually comment it for better uhhh.. brainability?
     bool hasDot = false;
@@ -211,9 +211,9 @@ static Token number(Lexer* lexer) {
 
     // build cleanLexeme without the underscores
     // yes i know not everyone will use underscores, theres probably a better way to handle stuff like "1_000_000" because not everyone will use it
-
-    // TODO: maybe implement a bool variable at the top for detecting whether '_' has been used
-    // if so, construct cleanLexeme since this thing is literally only required for numbers that have underscores for code readability
+    // TODO: maybe implement a bool variable at the top for detecting whether '_' has been used or 0x,0b,0o detected
+    // if so, construct cleanLexeme since this thing is literally only required for numbers that have underscores for code readability or hex/bin/oct numbers
+    // not required for regular numbers and therefore a tiny waste of resources, could directly jump to getting literal value
     size_t lexemeLength = lexemeEnd - numberStart;
     char* cleanLexeme = malloc(lexemeLength + 1); // +1 for null terminator
     size_t cleanIndex = 0;
@@ -250,7 +250,7 @@ static Token number(Lexer* lexer) {
         // A: because strtoll doesn't provide us with the granularity we need - we want to manually check whether it is EXPLICITLY ONLY 1s and 0s.
         // strtoll will literally just continue silently without any errors until it encounters an invalid character
         // this means that binary numbers like "0b102" will be successfully converted into the number 2, since it continued converting until it reached an invalid number (not 1 or 0) and interpreted it as "0b10"
-        // this is an issue because we actually want to give users an error when they wrote an invalid binary number, not just silently continue converting the number and then have people complain about weird quirks
+        // this is an issue because we actually want to give users an error when they wrote an invalid binary number, not just silently continue converting the number and then have people complain about weird quirks in the language
         value = 0;
         size_t startIndex = 2; // skip "0b"
         for (size_t i = startIndex; i < cleanIndex; ++i) {
@@ -290,30 +290,16 @@ static Token number(Lexer* lexer) {
 
 // scan a string
 // TODO: escape sequences
-// TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
-// TODO: maybe dont have a separate way of defining multiline strings, e.g. [[[]]] in lua. just allow both single and double quotes to be multiline?
-// i mean theoretically that would work and it wouldnt matter because the lexer sees it normally
-// follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
-static Token string_old(Lexer* lexer) {
-    while (peek(lexer) != '"' && !isAtEnd(lexer)) {
-        if (peek(lexer) == '\n') lexer->line++;
-        advance(lexer);
-    }
-
-    if (isAtEnd(lexer)) return errorToken(lexer, "Unterminated string");
-
-    advance(lexer); // consume closing quote
-
-    char *value = strndup(lexer->start + 1, (lexer->current - lexer->start) - 2);
-    return makeToken(lexer, TOKEN_STRING, value);
-}
-
+// TODO: follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
+// tabs / indentation shall be ignored too in multiline strings
 static Token string(Lexer* lexer, char quote) {
     bool isMultiline = false;
     int quoteCount = 1; // it is 1 bc we have already consumed a quote
 
     // check for triple quotes
-    if (match(lexer, quote) && match(lexer, quote)) {
+    if (peek(lexer) == quote && peekNext(lexer) == quote) {
+        advance(lexer); // consume second quote
+        advance(lexer); // consume third quote (pointer is now pointing at the third quote)
         isMultiline = true;
         quoteCount = 3;
     }
@@ -323,6 +309,7 @@ static Token string(Lexer* lexer, char quote) {
 
         if (c == '\n') {
             lexer->line++;
+            if (!isMultiline) return errorToken(lexer, "Unterminated string");
         }
 
         if (c == quote) {
@@ -338,6 +325,13 @@ static Token string(Lexer* lexer, char quote) {
                 // STRING END (TERMINATION)
                 size_t totalLength = lexer->current - lexer->start;
                 size_t contentLength = totalLength - (2 * quoteCount);
+
+                // ensure contentLength is not negative
+                // TODO: this check isnt really needed anymore since the implementation of the new check for triple quotes
+                if (contentLength < 0) {
+                    // ensures that empty strings are handled safely
+                    contentLength = 0;
+                }
 
                 char *value = strndup(lexer->start + quoteCount, contentLength);
 
