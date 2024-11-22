@@ -292,6 +292,7 @@ static Token number(Lexer* lexer) {
 // TODO: escape sequences
 // TODO: follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
 // tabs / indentation shall be ignored too in multiline strings
+// CLEAN THIS CODE UP
 static Token string(Lexer* lexer, char quote) {
     bool isMultiline = false;
     int quoteCount = 1; // it is 1 bc we have already consumed a quote
@@ -304,12 +305,20 @@ static Token string(Lexer* lexer, char quote) {
         quoteCount = 3;
     }
 
+    // use dynamic buffer to build actual processed string
+    size_t bufferSize = 128;
+    size_t bufferIndex = 0;
+    char* buffer = malloc(bufferSize);
+
     while (!isAtEnd(lexer)) {
         char c = advance(lexer);
 
         if (c == '\n') {
             lexer->line++;
-            if (!isMultiline) return errorToken(lexer, "Unterminated string");
+            if (!isMultiline) {
+                free(buffer);
+                return errorToken(lexer, "Unterminated string");
+            }
         }
 
         if (c == quote) {
@@ -323,23 +332,150 @@ static Token string(Lexer* lexer, char quote) {
 
             if (matchedQuotes == quoteCount) {
                 // STRING END (TERMINATION)
-                size_t totalLength = lexer->current - lexer->start;
-                size_t contentLength = totalLength - (2 * quoteCount);
+                buffer[bufferIndex] = '\0'; // null terminate the string
+                return makeToken(lexer, TOKEN_STRING, buffer);
+            } else {
+                // less than required quotes, treat as part of the string
+                for (int i = 0; i < matchedQuotes; i++) {
+                    if (bufferIndex >= bufferSize - 1) {
+                        bufferSize *= 2;
+                        buffer = realloc(buffer, bufferSize);
+                    }
+                    buffer[bufferIndex++] = quote;
+                }
+            }
+        } else if (c == '\\') {
+            // handle escape sequences
+            if (isAtEnd(lexer)) {
+                free(buffer);
+                return errorToken(lexer, "Unterminated escape sequence");
+            }
 
-                // ensure contentLength is not negative
-                // TODO: this check isnt really needed anymore since the implementation of the new check for triple quotes
-                if (contentLength < 0) {
-                    // ensures that empty strings are handled safely
-                    contentLength = 0;
+            char escapeChar = advance(lexer);
+            if (escapeChar == 'x') {
+                // hexadecimal escape sequence
+                int hexValue = 0;
+                int digits = 0;
+
+                while (isxdigit(peek(lexer))) {
+                    char hexDigit = advance(lexer);
+                    hexValue = hexValue * 16 + (isdigit(hexDigit) ? hexDigit - '0' : tolower(hexDigit) - 'a' + 10);
+                    digits++;
+                }
+                if (digits == 0) {
+                    free(buffer);
+                    return errorToken(lexer, "Invalid hexadecimal escape sequence");
+                }
+                // append processed character to buffer
+                if (bufferIndex >= bufferSize - 1) {
+                    bufferSize *= 2;
+                    buffer = realloc(buffer, bufferSize);
+                }
+                buffer[bufferIndex++] = (char)hexValue;
+            } else if (escapeChar == 'u' || escapeChar == 'U') {
+                // unicode escape sequence
+                int unicodeLength = (escapeChar == 'u') ? 4 : 8;
+                int unicodeValue = 0;
+
+                for (int i = 0; i < unicodeLength; i++) {
+                    if (!isxdigit(peek(lexer))) {
+                        free(buffer);
+                        return errorToken(lexer, "Invalid Unicode escape sequence");
+                    }
+                    char hexDigit = advance(lexer);
+                    unicodeValue = unicodeValue * 16 + (isdigit(hexDigit) ? hexDigit - '0' : tolower(hexDigit) - 'a' + 10);
                 }
 
-                char *value = strndup(lexer->start + quoteCount, contentLength);
+                // final step: encode unicode value into UTF-8
+                char utf8[4];
+                int utf8Length = 0;
 
-                return makeToken(lexer, TOKEN_STRING, value);
+                if (unicodeValue <= 0x7F) {
+                    utf8[0] = (char)unicodeValue;
+                    utf8Length = 1;
+                } else if (unicodeValue <= 0x7FF) {
+                    utf8[0] = (char)(0xC0 | ((unicodeValue >> 6) & 0x1F));
+                    utf8[1] = (char)(0x80 | (unicodeValue & 0x3F));
+                    utf8Length = 2;
+                } else if (unicodeValue <= 0xFFFF) {
+                    utf8[0] = (char)(0xE0 | ((unicodeValue >> 12) & 0x0F));
+                    utf8[1] = (char)(0x80 | ((unicodeValue >> 6) & 0x3F));
+                    utf8[2] = (char)(0x80 | (unicodeValue & 0x3F));
+                    utf8Length = 3;
+                } else if (unicodeValue <= 0x10FFFF) {
+                    utf8[0] = (char)(0xF0 | ((unicodeValue >> 18) & 0x07));
+                    utf8[1] = (char)(0x80 | ((unicodeValue >> 12) & 0x3F));
+                    utf8[2] = (char)(0x80 | ((unicodeValue >> 6) & 0x3F));
+                    utf8[3] = (char)(0x80 | (unicodeValue & 0x3F));
+                    utf8Length = 4;
+                } else {
+                    free(buffer);
+                    return errorToken(lexer, "Unicode code point out of range");
+                }
+
+                // append processed UTF-8 bytes to buffer
+                for (int i = 0; i < utf8Length; i++) {
+                    if (bufferIndex >= bufferSize - 1) {
+                        bufferSize *= 2;
+                        buffer = realloc(buffer, bufferSize);
+                    }
+                    buffer[bufferIndex++] = utf8[i];
+                }
+            } else if (escapeChar >= '0' && escapeChar <= '7') {
+                // octal escape sequence
+                int octalValue = escapeChar - '0';
+                int digits = 1;
+
+                while (digits < 3 && peek(lexer) >= '0' && peek(lexer) <= '7') {
+                    octalValue = octalValue * 8 + (advance(lexer) - '0');
+                    digits++;
+                }
+
+                // append character to buffer
+                if (bufferIndex >= bufferSize - 1) {
+                    bufferSize *= 2;
+                    buffer = realloc(buffer, bufferSize);
+                }
+                buffer[bufferIndex++] = (char)octalValue;
+            } else {
+                // handle standard escape sequences
+                char decodedChar;
+                switch (escapeChar) {
+                    case 'n': decodedChar = '\n'; break;
+                    case 'r': decodedChar = '\r'; break;
+                    case 't': decodedChar = '\t'; break;
+                    case '\\': decodedChar = '\\'; break;
+                    case '\'': decodedChar = '\''; break;
+                    case '\"': decodedChar = '\"'; break;
+                    case '0': decodedChar = '\0'; break;
+                    case 'b': decodedChar = '\b'; break;
+                    case 'f': decodedChar = '\f'; break;
+                    case 'v': decodedChar = '\v'; break;
+                    case 'a': decodedChar = '\a'; break; // should we even process this lmao?
+                    default:
+                        free(buffer);
+                        return errorToken(lexer, "Invalid escape sequence");
+                }
+
+                if (bufferIndex >= bufferSize - 1) {
+                    bufferSize *= 2;
+                    buffer = realloc(buffer, bufferSize);
+                }
+                buffer[bufferIndex++] = decodedChar;
             }
+        } else {
+            // regular character
+
+            if (bufferIndex >= bufferSize - 1) {
+                bufferSize *= 2;
+                buffer = realloc(buffer, bufferSize);
+            }
+            buffer[bufferIndex++] = c;
         }
     }
 
+    // obviously if all of the if statements didnt catch all of the characters in a string or it just wasnt terminated, then return error
+    free(buffer);
     return errorToken(lexer, "Unterminated string");
 }
 
