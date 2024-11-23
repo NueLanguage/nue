@@ -499,10 +499,11 @@ static Token identifier(Lexer* lexer) {
     if (length == 5 && strncmp(lexer->start, "break", 5) == 0) return makeToken(lexer, TOKEN_BREAK, NULL);
     if (length == 6 && strncmp(lexer->start, "return", 6) == 0) return makeToken(lexer, TOKEN_RETURN, NULL);
     if (length == 4 && strncmp(lexer->start, "this", 4) == 0) return makeToken(lexer, TOKEN_THIS, NULL);
-    if (length == 6 && strncmp(lexer->start, "delete", 6) == 0) return makeToken(lexer, TOKEN_DELETE, NULL);
+    //if (length == 6 && strncmp(lexer->start, "delete", 6) == 0) return makeToken(lexer, TOKEN_DELETE, NULL); // temporarily removed in favour of the "void" keyword
     if (length == 4 && strncmp(lexer->start, "true", 4) == 0) return makeToken(lexer, TOKEN_TRUE, NULL);
     if (length == 5 && strncmp(lexer->start, "false", 5) == 0) return makeToken(lexer, TOKEN_FALSE, NULL);
     if (length == 4 && strncmp(lexer->start, "null", 4) == 0) return makeToken(lexer, TOKEN_NULL, NULL);
+    if (length == 4 && strncmp(lexer->start, "void", 4) == 0) return makeToken(lexer, TOKEN_VOID, NULL);
     if (length == 8 && strncmp(lexer->start, "function", 8) == 0) return makeToken(lexer, TOKEN_FUNCTION, NULL);
     if (length == 5 && strncmp(lexer->start, "table", 5) == 0) return makeToken(lexer, TOKEN_TABLE, NULL);
     if (length == 7 && strncmp(lexer->start, "boolean", 7) == 0) return makeToken(lexer, TOKEN_BOOLEAN, NULL);

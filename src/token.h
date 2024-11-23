@@ -60,10 +60,12 @@ typedef enum {
     TOKEN_RETURN,
     TOKEN_THIS,
 
-    TOKEN_DELETE, // unallocates something from memory
+    //TOKEN_DELETE, // unallocates something from memory // temporarily removed in favour of the "void" keyword
 
     TOKEN_TRUE, // boolean true
     TOKEN_FALSE, // boolean false
+
+    TOKEN_VOID, // void - dealloc from memory, complete absence of value
 
     TOKEN_NULL, // "null" keyword, type, and value
     TOKEN_FUNCTION, // "function" keyword, type, and constructor for new functions
