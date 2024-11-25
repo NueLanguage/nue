@@ -2,12 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdarg.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../src/lexer.h"
 #include "../src/token.h"
 
 #define TOKEN_TYPE_COUNT (TOKEN_ERROR + 1) // total
+
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT __attribute__((visibility("default")))
+#endif
 
 const char* tokenTypeToString(TokenType type) {
     switch (type) {
@@ -57,9 +64,10 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_BREAK: return "BREAK";
         case TOKEN_RETURN: return "RETURN";
         case TOKEN_THIS: return "THIS";
-        case TOKEN_DELETE: return "DELETE";
+        //case TOKEN_DELETE: return "DELETE";
         case TOKEN_TRUE: return "TRUE";
         case TOKEN_FALSE: return "FALSE";
+        case TOKEN_VOID: return "VOID";
         case TOKEN_NULL: return "NULL";
         case TOKEN_FUNCTION: return "FUNCTION";
         case TOKEN_TABLE: return "TABLE";
@@ -75,6 +83,63 @@ const char* tokenTypeToString(TokenType type) {
 
 int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
 
+EXPORT char* codeToLexString(const char* source) {
+    Lexer lexer;
+    initLexer(&lexer, source);
+
+    Token token;
+    size_t bufferSize = 1024;
+    size_t bufferUsed = 0;
+    char* buffer = (char*)malloc(bufferSize);
+
+    if (!buffer) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+
+    buffer[0] = '\0';
+
+    do {
+        token = scanToken(&lexer);
+
+        // ensure the buffer can accomodate the next tokens formatted string
+        size_t requiredSize = bufferUsed + 128; // assuming
+        if (requiredSize > bufferSize) {
+            bufferSize *= 2;
+            buffer = (char*)realloc(buffer, bufferSize);
+            if (!buffer) {
+                fprintf(stderr, "Memory allocation failed\n");
+                exit(1);
+            }
+        }
+
+        // append token info to buffer
+        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "[Line %d] %s '%s'", token.line, tokenTypeToString(token.type), token.lexeme);
+
+        if (token.literal != NULL) {
+            if (token.type == TOKEN_NUMBER) {
+                bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " (%f)", *(double*)token.literal);
+            } else if (token.type == TOKEN_STRING) {
+                bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " ('%s')", (char*)token.literal);
+            }
+        }
+        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "\n");
+
+        // free token resources
+        free(token.lexeme);
+        if (token.literal != NULL) {
+            if (token.type == TOKEN_NUMBER) {
+                free((double*)token.literal);
+            } else if (token.type == TOKEN_STRING) {
+                free((char*)token.literal);
+            }
+        }
+    } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
+
+    return buffer; // the caller should free this
+}
+
+#ifndef SHARED_LIBRARY
 void printToken(Token token) {
     printf("[Line %d] %s '%s'", token.line, tokenTypeToString(token.type), token.lexeme);
 
@@ -238,3 +303,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+#endif
