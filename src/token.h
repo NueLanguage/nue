@@ -17,6 +17,8 @@ typedef enum {
 
     // one or two character tokens
     TOKEN_PLUS, TOKEN_MINUS, // + -
+    TOKEN_PLUS_PLUS, // ++ (increment by 1)
+    TOKEN_MINUS_MINUS, // -- (decrement by 1)
     TOKEN_PLUS_EQ, // += (syntactic sugar for adding RHS value to LHS variable)
     TOKEN_MINUS_EQ, // -= (syntactic sugar for subtracting RHS value from LHS variable)
 
@@ -26,6 +28,9 @@ typedef enum {
 
     TOKEN_POWER, // ^ (exponentiation)
     TOKEN_POWER_EQ, // ^= (syntactic sugar for raising LHS variable to the power of the RHS value)
+
+    TOKEN_PERCENT, // % (modulus operator)
+    TOKEN_BACKSLASH, // \ (integer/floor division operator)
 
     TOKEN_EQ, // = (assignment)
     TOKEN_EQ_EQ, // == (equal to)
@@ -56,18 +61,19 @@ typedef enum {
     TOKEN_IF, TOKEN_ELSE,
     TOKEN_FOR, TOKEN_IN,
     TOKEN_WHILE,
+    TOKEN_CONTINUE,
     TOKEN_BREAK,
     TOKEN_RETURN,
     TOKEN_THIS,
 
-    //TOKEN_DELETE, // unallocates something from memory // temporarily removed in favour of the "void" keyword
-
     TOKEN_TRUE, // boolean true
     TOKEN_FALSE, // boolean false
 
+    // void is the equivalent of not storing anything
+    // in terms of memory consumption, null is just after "void" if we sort from lowest to highest mem usage
     TOKEN_VOID, // void - dealloc from memory, complete absence of value
-
     TOKEN_NULL, // "null" keyword, type, and value
+    
     TOKEN_FUNCTION, // "function" keyword, type, and constructor for new functions
 
     // type keywords

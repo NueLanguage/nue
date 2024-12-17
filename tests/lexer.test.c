@@ -27,32 +27,72 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_COMMA: return "COMMA";
         case TOKEN_DOT: return "DOT";
         case TOKEN_SEMICOLON: return "SEMICOLON";
+
+
+
         case TOKEN_PLUS: return "PLUS";
         case TOKEN_MINUS: return "MINUS";
+        case TOKEN_PLUS_PLUS: return "INCREMENT";
+        case TOKEN_MINUS_MINUS: return "DECREMENT";
         case TOKEN_PLUS_EQ: return "PLUS_EQ";
         case TOKEN_MINUS_EQ: return "MINUS_EQ";
+
+
+
         case TOKEN_STAR: return "STAR";
         case TOKEN_SLASH: return "SLASH";
         case TOKEN_STAR_EQ: return "STAR_EQ";
         case TOKEN_SLASH_EQ: return "SLASH_EQ";
+
+
+
         case TOKEN_POWER: return "POWER";
         case TOKEN_POWER_EQ: return "POWER_EQ";
+
+
+
+        case TOKEN_PERCENT: return "MODULUS";
+        case TOKEN_BACKSLASH: return "FLOORDIV";
+
+
+
         case TOKEN_EQ: return "EQ";
         case TOKEN_EQ_EQ: return "EQ_EQ";
+
+
+
         case TOKEN_AND: return "AND";
         case TOKEN_OR: return "OR";
         case TOKEN_XOR: return "XOR";
+
+
+
         case TOKEN_BANG: return "BANG";
         case TOKEN_BANG_EQ: return "BANG_EQ";
+
+
+
         case TOKEN_LT: return "LT";
         case TOKEN_GT: return "GT";
         case TOKEN_LT_EQ: return "LT_EQ";
         case TOKEN_GT_EQ: return "GT_EQ";
+
+
+
         case TOKEN_LENGTH: return "LENGTH";
+
+
+
         case TOKEN_ARROW: return "ARROW";
+
+
+
         case TOKEN_IDENTIFIER: return "IDENTIFIER";
         case TOKEN_NUMBER: return "NUMBER";
         case TOKEN_STRING: return "STRING";
+
+
+
         case TOKEN_PRIVATE: return "PRIVATE";
         case TOKEN_VAR: return "VAR";
         case TOKEN_ALIAS: return "ALIAS";
@@ -61,22 +101,39 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_FOR: return "FOR";
         case TOKEN_IN: return "IN";
         case TOKEN_WHILE: return "WHILE";
+        case TOKEN_CONTINUE: return "CONTINUE";
         case TOKEN_BREAK: return "BREAK";
         case TOKEN_RETURN: return "RETURN";
         case TOKEN_THIS: return "THIS";
-        //case TOKEN_DELETE: return "DELETE";
+
+
+
         case TOKEN_TRUE: return "TRUE";
         case TOKEN_FALSE: return "FALSE";
+
+
         case TOKEN_VOID: return "VOID";
         case TOKEN_NULL: return "NULL";
+
+
+
         case TOKEN_FUNCTION: return "FUNCTION";
+
+
+
         case TOKEN_TABLE: return "TABLE";
         case TOKEN_BOOLEAN: return "BOOLEAN";
         case TOKEN_NUMBER_TYPE: return "NUMBER_TYPE";
         case TOKEN_STRING_TYPE: return "STRING_TYPE";
         case TOKEN_ANY: return "ANY";
+
+
+
         case TOKEN_EOF: return "EOF";
         case TOKEN_ERROR: return "ERROR";
+
+
+        
         default: return "UNKNOWN_TOKEN";
     }
 }

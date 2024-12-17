@@ -496,10 +496,10 @@ static Token identifier(Lexer* lexer) {
     if (length == 3 && strncmp(lexer->start, "for", 3) == 0) return makeToken(lexer, TOKEN_FOR, NULL);
     if (length == 2 && strncmp(lexer->start, "in", 2) == 0) return makeToken(lexer, TOKEN_IN, NULL);
     if (length == 5 && strncmp(lexer->start, "while", 5) == 0) return makeToken(lexer, TOKEN_WHILE, NULL);
+    if (length == 8 && strncmp(lexer->start, "continue", 8) == 0) return makeToken(lexer, TOKEN_CONTINUE, NULL);
     if (length == 5 && strncmp(lexer->start, "break", 5) == 0) return makeToken(lexer, TOKEN_BREAK, NULL);
     if (length == 6 && strncmp(lexer->start, "return", 6) == 0) return makeToken(lexer, TOKEN_RETURN, NULL);
     if (length == 4 && strncmp(lexer->start, "this", 4) == 0) return makeToken(lexer, TOKEN_THIS, NULL);
-    //if (length == 6 && strncmp(lexer->start, "delete", 6) == 0) return makeToken(lexer, TOKEN_DELETE, NULL); // temporarily removed in favour of the "void" keyword
     if (length == 4 && strncmp(lexer->start, "true", 4) == 0) return makeToken(lexer, TOKEN_TRUE, NULL);
     if (length == 5 && strncmp(lexer->start, "false", 5) == 0) return makeToken(lexer, TOKEN_FALSE, NULL);
     if (length == 4 && strncmp(lexer->start, "null", 4) == 0) return makeToken(lexer, TOKEN_NULL, NULL);
@@ -538,8 +538,13 @@ Token scanToken(Lexer* lexer) {
         case ',': return makeToken(lexer, TOKEN_COMMA, NULL);
         case '.': return makeToken(lexer, TOKEN_DOT, NULL);
 
-        case '+': return makeToken(lexer, match(lexer, '=') ? TOKEN_PLUS_EQ : TOKEN_PLUS, NULL);
+        case '+':
+            if (match(lexer, '+')) return makeToken(lexer, TOKEN_PLUS_PLUS, NULL);
+            if (match(lexer, '=')) return makeToken(lexer, TOKEN_PLUS_EQ, NULL);
+            return makeToken(lexer, TOKEN_PLUS, NULL); // neither decrement nor syntactic sygar, therefore it is a regular plus
+        
         case '-':
+            if (match(lexer, '-')) return makeToken(lexer, TOKEN_MINUS_MINUS, NULL);
             if (match(lexer, '>')) return makeToken(lexer, TOKEN_ARROW, NULL);
             if (match(lexer, '=')) return makeToken(lexer, TOKEN_MINUS_EQ, NULL);
             return makeToken(lexer, TOKEN_MINUS, NULL); // neither an arrow nor syntactic sugar, therefore it is a regular minus
@@ -548,6 +553,9 @@ Token scanToken(Lexer* lexer) {
         // this assumes that comments have been effectively handled in skipWhitespace(). therefore, if we have ended up here in the scanToken() function, then that means it is definitely a division operator.
         case '/': return makeToken(lexer, match(lexer, '=') ? TOKEN_SLASH_EQ : TOKEN_SLASH, NULL);
         case '^': return makeToken(lexer, match(lexer, '=') ? TOKEN_POWER_EQ : TOKEN_POWER, NULL);
+
+        case '%': return makeToken(lexer, TOKEN_PERCENT, NULL);
+        case '\\': return makeToken(lexer, TOKEN_BACKSLASH, NULL);
 
         case '=': return makeToken(lexer, match(lexer, '=') ? TOKEN_EQ_EQ : TOKEN_EQ, NULL);
         case '!': return makeToken(lexer, match(lexer, '=') ? TOKEN_BANG_EQ : TOKEN_BANG, NULL);
