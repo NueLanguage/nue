@@ -1,0 +1,546 @@
+// testing of TOKEN_LPAREN and TOKEN_RPAREN
+// simply calling a function since this is the most common use case for these tokens
+print("hi guys!")
+
+// testing of TOKEN_LBRACE, TOKEN_RBRACE
+// usually used for tables or delimiting code blocks
+private var table myTable = {} // an empty table
+if true {
+    print("tested TOKEN_LBRACE and TOKEN_RBRACE!")
+}
+
+// testing of TOKEN_LBRACKET and TOKEN_RBRACKET
+// usually used for type whitelists or indexing a table
+private var table bracketsTable = {
+    hello = "hi!!"
+}
+print(bracketsTable["hello"]) // output: hi!!
+
+private var [number, string] acceptsMultipleTypes = "I accept multiple types!"
+acceptsMultipleTypes = 123
+
+// testing of TOKEN_COMMA
+// usually used to separate arguments provided to functions or for stuff inside tables
+print("hello, the next number is:", 5)
+private var table commaTable = {
+    hi = "hello", // notice we are using commas to separate items in a table
+    aNumber = 6, // think of it like speaking in english: you use commas to make a list
+    anotherthing = 300
+}
+
+// testing of TOKEN_DOT
+// usually used to a table
+private var table dotTestTable = {
+    item = "Something",
+    quantity = 5
+}
+print(dotTestTable.item) // output: Something
+print(dotTestTable.quantity) // output: 5
+
+// testing of TOKEN_SEMICOLON
+// almost useless, but used to separate multiple statements on one line
+//#
+use of semicolons is heavily discouraged in nue because it makes code look a bit more messy
+(and we dont want to copy the syntax of C-like programming languages)
+#//
+// please only ever use semicolons when you really NEED to put statements on one line
+private var number semicolonNumber = 6; print(semicolonNumber); print(semicolonNumber++)
+
+// testing of TOKEN_PLUS
+// basic arithmetic: addition
+print(5 + 5) // output: 10
+
+// testing of TOKEN_MINUS
+// basic arithmetic: subtraction
+print(12 - 7) // output: 5
+
+// testing of TOKEN_PLUS_PLUS
+// increment: add 1 to whatever is incremented and assign the new value
+private var number plusplusNumber = 67
+plusplusNumber++ // plusplusNumber is now 68
+// doing ++ also returns the new value, so you can also use it in things like function arguments
+print(plusplusNumber++) // output: 69
+
+// testing of TOKEN_MINUS_MINUS
+// decrement: subtract 1 from whatever is decremented and assign the new value
+private var number minusminusNumber = 71
+minusminusNumber-- // minusminusNumber is now 70
+// doing -- also returns the new value, so you can also use it in things like function arguments
+print(minusminusNumber--) // output: 69
+
+// testing of TOKEN_PLUS_EQ
+// increment by x: similar to increment, except you get to specify what you increment something by
+private var number pluseqNumber = 15
+pluseqNumber += 5 // pluseqNumber is now 20
+print(pluseqNumber) // output: 20
+// TODO: check trello https://trello.com/c/DJOUtuJz
+// subject: whether inline += and -= and *= and /= and ^= should be allowed so that statements like this would work:
+// print(pluseqNumber += 10) // output: 30, and pluseqNumber is now 30
+
+// testing of TOKEN_MINUS_EQ
+// decrement by x: similar to decrement, except you get to specify what you decrement something by
+private var number minuseqNumber = 35
+minuseqNumber -= 10 // minuseqNumber is now 25
+print(minuseqNumber) // output: 25
+// TODO: check trello https://trello.com/c/DJOUtuJz
+// subject: whether inline += and -= and *= and /= and ^= should be allowed so that statements like this would work:
+// print(minuseqNumber -= 10) // output: 15, and minuseqNumber is now 15
+
+// testing of TOKEN_STAR
+// basic arithmetic: multiplication
+print(50 * 4) // output: 200
+
+// testing of TOKEN_SLASH
+// basic arithmetic: division
+print(100 / 10) // output: 10
+
+// testing of TOKEN_STAR_EQ
+// multiplication by x: multiply something by x and assign the result to something
+private var number stareqNumber = 30
+stareqNumber *= 3 // stareqNumber is now 90
+print(stareqNumber) // output: 90
+// TODO: check trello https://trello.com/c/DJOUtuJz
+// subject: whether inline += and -= and *= and /= and ^= should be allowed so that statements like this would work:
+// print(stareqNumber *= 10) // output: 900, and stareqNumber is now 900
+
+// testing of TOKEN_SLASH_EQ
+// division by x: divide something by x and assign the result to something
+private var number slasheqNumber = 60
+slasheqNumber /= 5 // slasheqNumber is now 12
+print(slasheqNumber) // output: 12
+// TODO: check trello https://trello.com/c/DJOUtuJz
+// subject: whether inline += and -= and *= and /= and ^= should be allowed so that statements like this would work:
+// print(slasheqNumber /= 6) // output: 2, and slasheqNumber is now 2
+
+// testing of TOKEN_POWER
+// basic arithmetic: exponentiation
+print(5^3) // output: 125
+
+// testing of TOKEN_POWER_EQ
+// exponentiation by x: exponentiate something by x and assign the result to something
+private var number powereqNumber = 9
+powereqNumber ^= 2 // powereqNumber is now 81
+print(powereqNumber) // output: 81
+// TODO: check trello https://trello.com/c/DJOUtuJz
+// subject: whether inline += and -= and *= and /= and ^= should be allowed so that statements like this would work:
+// print(powereqNumber /= -1/2) // output: 1/9 or 0.111..., and powereqNumber is now 1/9 or 0.111...
+
+// testing of TOKEN_PERCENT
+// arithmetic: modulo operation, finds the remainder of a division
+print(10 % 3) // output: 1
+
+// testing of TOKEN_BACKSLASH
+// arithmetic: floor division, floor division, finds the largest integer less than or equal to the result of the division
+print(10 \ 3) // output: 3, because 3 only goes into 10 fully 3 times
+
+// testing of TOKEN_EQ
+// commonly used only for assignment
+private var boolean assignTested = true
+
+// testing of TOKEN_EQ_EQ
+// commonly only used for equality 
+print(3 == 3) // output: true
+if 3 == 3 {
+    print("3 is 3!")
+}
+
+// testing of TOKEN_AND
+// logical AND
+print(true & true) // output: true
+if true & true {
+    print("both were evaluated to true!")
+}
+
+// testing of TOKEN_OR
+// logical OR
+print(true || false) // output: true
+if true || false {
+    print("One or all were true!")
+}
+
+// testing of TOKEN_XOR
+// unlike many other programming languages, a single vertical bar represents a logical XOR rather than a BITWISE OR
+// this decision was made because of the nue ethos: simplicity, understanding, logic, etc.
+// single vertical bar represents logical XOR because in a XOR operation, only one thing can be true, therefore it is only one vertical bar
+// if you would like bitwise or, then please use the bit library instead.
+print(true | false | false) // output: true
+print(true | true | false) // output: false
+if true | false | false {
+    print("Only one was true!")
+}
+
+// testing of TOKEN_BANG
+// logical NOT
+print(!true) // output: false
+print(!false) // output: true
+
+private var boolean enabled = true
+if enabled {
+    print("disabling...")
+    enabled = !enabled
+    print("disabled - variable enabled is now equal to false")
+}
+
+// testing of TOKEN_BANG_EQ
+// not equal to
+print(3 != 5) // output: true
+print(3 != 3) // output: false
+if 3 != 5 {
+    print("3 isnt 5, obviously...")
+}
+
+// testing of TOKEN_LT
+// less than
+print(3 < 5) // output: true
+print(5 < 3) // output: false
+
+if 6 < 10 {
+    print("6 is obviously less than 10...")
+}
+
+// testing of TOKEN_GT
+// greater than
+print(23 > 2) // output: true
+print(2 > 23) // output: false
+
+if 6 > 1 {
+    print("6 is greater than 1, obviously")
+}
+
+// testing of TOKEN_LT_EQ
+// less than or equal to
+print(6 <= 7) // output: true
+print(6 <= 6) // output: true
+print(6 <= 6) // output: false
+
+if 6 <= 7 {
+    print("6 is less than or equal to 7")
+    print("although, we as humans know that 6 is actually less than 7")
+}
+
+// testing of TOKEN_GT_EQ
+// greater than or equal to
+print(7 >= 6) // output: true
+print(7 >= 7) // output: true
+print(7 >= 6) // output: false
+
+if 7 >= 6 {
+    print("7 is greater than or equal to 6")
+    print("yes, we as humans know that 7 is not equal to 6 but it is greater, meaning that the expression evaluates to true")
+}
+
+// testing of TOKEN_LENGTH
+// length operator, finds the length of something, e.g. a table, a string, etc
+private var string myLengthStringTest = "thisIsATest"
+print(#myLengthStringTest) // output: 11
+
+private var table myLengthTableTest = {
+    "this is something",
+    1,
+    5,
+    6,
+    "aaa",
+    "hello there",
+    "another thing",
+    true,
+    false
+}
+print(#myLengthTableTest) // output: 9
+
+// testing of TOKEN_ARROW
+// used to denote the types of the outputs of a function
+
+// this is the old way of declaring functions and it used to be the only way to declare functions
+// the idea behind this was that functions would be first class citizens which would be assigned to a variable, just like any other type
+// and then you could call the function by using the function name, e.g. myEpicFunction()
+// dont worry - this way still works!
+private var function myOldFunction = function(string input, number something) -> boolean {
+    print(input)
+
+    if something > 5 {
+        return true
+    } else {
+        return false
+    }
+}
+// I personally thought that this looked like a bit of a verbose/long way to declare functions
+// so, after receiving feedback, I re-designed function declarations to make it a bit cleaner and akin to some other programming languages
+
+// new function declaration syntax. please note that the old way still works - you were simply assigning
+private function myNewFunction(string input, number something) -> boolean {
+    print(input)
+
+    if something > 5 {
+        return true
+    } else {
+        return false
+    }
+}
+
+// testing of TOKEN_IDENTIFIER
+// an identifier is the name of a variable or a function, etc
+private var string myIdentifier = "im a string stored in the variable myIdentifier"
+// the identifier here is "myIdentifier"
+
+print(myIdentifier)
+// the identifiers here are "print" and "myIdentifier"
+
+// testing of TOKEN_NUMBER
+// a literal number
+print(1.2345678) // output: 1.234568
+// note: it has been rounded because internally, nue numbers are represented as DOUBLEs in C
+print(1.23e5) // output: 123000
+print(100e-1) // output: 10
+print(0b10) // output: 2
+print(123) // output: 123
+print(0.456) // output: 0.456
+print(1e6) // output: 1000000
+print(0x1a3f) // output: 6719
+print(0b1010) // output: 10
+print(1_000_000_000) // output: 1000000000
+print(1.23e-4) // output: 0.000123
+print(0) // output: 0
+print(0000123) // output: 123
+print(0b10) // output: 2
+
+// testing of TOKEN_STRING
+print("Hello world!")
+private var string myTestMessage = "hey guys"
+print(myTestMessage) // output: hey guys
+
+// testing of TOKEN_PRIVATE
+private var number notImportant = 2
+
+// testing of TOKEN_VAR
+var number notImportantAgain = 3
+
+// testing of TOKEN_ALIAS
+// a very nice feature in nue, makes a reference to another varibale
+// (aka points to the same memory location as another variable)
+private var boolean isAmazing = true
+private alias iMadeAnAlias = isAmazing
+print(isAmazing, iMadeAnAlias) // output: true, true
+iMadeAnAlias = false
+print(isAmazing, iMadeAnAlias) // output: false, false
+// notice how we only changed iMadeAnAlias but isAmazing also changed
+// this is because both of them point to the same memory location
+
+// testing of TOKEN_IF
+if true {
+    print("You just tested the basics of an if statement - it indeed checks for true!")
+}
+
+// testing of TOKEN_ELSE
+if false {
+    print("This should not run. If this did print, then you experienced cosmic radiation and random bit shifts!")
+    // the code inside this block should NOT run.
+} else {
+    print("Hi, if you saw this message then everything is running correctly!")
+}
+
+// testing of TOKEN_FOR
+private var table myTebel = {
+    "a",
+    "b",
+    "c",
+    "hi",
+    "d"
+}
+
+for thingy in myTebel {
+    print(thingy)
+}
+//#
+
+for loop output:
+a
+b
+c
+hi
+d
+
+#//
+
+private var table myOtherTable = {
+    hello = "world",
+    test = "testing",
+    yes = true,
+    no = false
+}
+
+for index, value in myOtherTable {
+    print(index, value)
+}
+//#
+
+for loop output:
+hello, world
+test, testing
+yes, true
+no, false
+
+#//
+
+// testing of TOKEN_IF
+if "bye" in {"bye", "no"} {
+    print("bye is in that array!")
+}
+
+// testing of TOKEN_WHILE
+private var number counter = 0
+while true {
+    counter++
+
+    if counter >= 5 {
+        break
+    }
+}
+
+// testing of TOKEN_CONTINUE
+for something in {"aa", "bb", "bye", "hello"} {
+    if something == "bye" {
+        break
+    } else {
+        continue
+    }
+
+    print(1+1) // this should never print
+}
+
+// testing of TOKEN_BREAK
+while true {
+    break
+}
+// this loop basically does nothing
+
+// testing of TOKEN_RETURN
+private function returnTrue() -> boolean {
+    return true
+}
+print(returnTrue()) // output: true
+
+// testing of TOKEN_THIS
+private var table myLibrary = {
+    firstThing = function(number hello) -> boolean {
+        if hello == 1 {
+            return true
+        } else {
+            return false
+        }
+    },
+
+    data = {
+        10,
+        10,
+        20,
+        30,
+        45,
+        73,
+        49
+    },
+
+    calculateAverage = function() -> number {
+        private var number sum = 0
+        for num in this.data {
+            sum += num
+        }
+
+        return sum / #this.data
+    }
+}
+print(myLibrary.calculateAverage()) // output: 237/7 or 33.8571428571...
+
+// testing of TOKEN_TRUE
+print(true) // output: true
+
+// testing of TOKEN_FALSE
+print(false) // output: false
+
+// testing of TOKEN_VOID
+// the "void" keyword is used to denote the complete absence of a value such as a function not returning anything
+// also used to denote deallocation of a variable
+private var string deallocateMePlease = "hey there, i will be deallocated!"
+deallocateMePlease = void
+
+private function printAndDontReturn(string toPrint) -> void {
+    print(toPrint)
+}
+
+// testing of TOKEN_NULL
+// the "null" keyword is used to denote the absence of a USEFUL value
+// this can also be the TYPE keyword for a table
+// this is NOT the same as void
+// void takes up ZERO memory. null takes up a tiny bit of memory but it is negligible
+private var [number, null] canHoldNumberAndNull = 9394
+print(canHoldNumberAndNull) // output: 9394
+canHoldNumberAndNull = null
+print(canHoldNumberAndNull) // output: null
+
+
+// testing of TOKEN_FUNCTION
+// this is specifically the TYPE keyword for a function
+// can also be a constructor for functions
+private function calculateAverage(table *cacca) -> number {
+    // you might think that this is needed, but because we have explicitly declared a type,
+    // nue expects AT LEAST one argument
+    //if !(#numbers >= 1) { error("At least one number must be provided!") }
+
+    private var number sum = 0
+
+    for num in cacca {
+        sum += num
+    }
+
+    return sum / #numbers
+}
+print(calculateAverage(1, 2, 3, 4, 5)) // output: 3
+
+private function anotherFunction(table *something) -> void {
+    print(table.unpack(something))
+}
+
+private function callAnotherFunction(table *varargumentos) -> void {
+    anotherFunction(table.unpack(varargumentos))
+}
+
+private function oneConstantArgumentAndTheRestIsUnknown(number yes, table *varargsss) -> void {
+    anotherFunction(yes * 5, table.unpack(varargsss))
+}
+
+// testing of TOKEN_TABLE
+// this is specifically the TYPE keyword for a table
+private var table tableTokenTest = {}
+
+// testing of TOKEN_BOOLEAN
+// this is specifically the TYPE keyword for a boolean
+private var boolean epic = true
+
+// testing of TOKEN_NUMBER_TYPE
+// this is specifically the TYPE keyword for a number
+private var number pi = 3.14159
+
+// testing of TOKEN_STRING_TYPE
+// this is specifically the TYPE keyword for a string
+private var string greeting1000 = "greetings my fellow!"
+
+// testing of TOKEN_ANY
+// this is specifically the TYPE keyword for anything
+// variables that declare "any" as the type(s) will accept any type
+private var any thisAcceptsAnything  = "hi"
+thisAcceptsAnything = 32
+thisAcceptsAnything = null
+thisAcceptsAnything = {"a", 5, 324}
+
+// testing of TOKEN_ERROR
+0o755 // INVALID OCTAL NUMBER
+0o764 // INVALID OCTAL NUMBER
+0.12.34 // Invalid number format: too many decimal points
+.1.2.. // Invalid number format: too many decimal points
+0.12.3. // Invalid number format: too many decimal points
+0xg12 // Invalid hexadecimal digit
+0xg // Invalid hexadecimal digit
+0x // Invalid hexadecimal number
+0b102 // Invalid binary digit
+
+// testing of TOKEN_EOF
+// after this line, the file reaches its end; therefore we get TOKEN_EOF

@@ -29,6 +29,7 @@ typedef enum {
     TOKEN_POWER, // ^ (exponentiation)
     TOKEN_POWER_EQ, // ^= (syntactic sugar for raising LHS variable to the power of the RHS value)
 
+    // TODO: PERCENT_EQ and BACKSLASH_EQ?? maybe??
     TOKEN_PERCENT, // % (modulus operator)
     TOKEN_BACKSLASH, // \ (integer/floor division operator)
 
