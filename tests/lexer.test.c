@@ -115,6 +115,9 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_BREAK: return "BREAK";
         case TOKEN_RETURN: return "RETURN";
         case TOKEN_THIS: return "THIS";
+        case TOKEN_MATCH: return "MATCH";
+        case TOKEN_CASE: return "CASE";
+
 
 
 

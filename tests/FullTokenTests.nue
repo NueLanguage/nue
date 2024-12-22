@@ -456,6 +456,63 @@ print(true) // output: true
 // testing of TOKEN_FALSE
 print(false) // output: false
 
+// testing of TOKEN_MATCH
+private var string myTestToMatch = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
+match myTestToMatch {
+    case "hello" {
+        print("hello")
+    }
+
+    case "hi" {
+        print("hi")
+    }
+
+    case "bonjour" {
+        print("bonjour")
+    }
+
+    case "greetings" {
+        print("greetings")
+    }
+
+    case "hey" {
+        print("hey")
+    }
+
+    case {
+        print("default")
+    }
+}
+
+// testing of TOKEN_CASE
+// this is used in conjunction with the match keyword
+private var string myTestToMatch2 = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
+match myTestToMatch2 {
+    case "hello" {
+        print("hello")
+    }
+
+    case "hi" {
+        print("hi")
+    }
+
+    case "bonjour" {
+        print("bonjour")
+    }
+
+    case "greetings" {
+        print("greetings")
+    }
+
+    case "hey" {
+        print("hey")
+    }
+
+    case {
+        print("default")
+    }
+}
+
 // testing of TOKEN_VOID
 // the "void" keyword is used to denote the complete absence of a value such as a function not returning anything
 // also used to denote deallocation of a variable

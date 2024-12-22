@@ -75,6 +75,8 @@ typedef enum {
     TOKEN_BREAK,
     TOKEN_RETURN,
     TOKEN_THIS,
+    TOKEN_MATCH, // match keyword for pattern matching
+    TOKEN_CASE, // case keyword for pattern matching
 
     TOKEN_FUNCTION, // "function" keyword, type, and constructor for new functions
 
