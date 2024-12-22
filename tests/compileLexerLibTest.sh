@@ -1,4 +1,5 @@
 # brew install readline
+# sudo apt install readline-dev
 
 # starts an x86_64 terminal using rosetta on apple silicon:
 # arch -x86_64 zsh
