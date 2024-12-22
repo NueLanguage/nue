@@ -52,10 +52,19 @@ typedef enum {
 
     TOKEN_ARROW, // -> (used for function return types)
 
-    // literals
     TOKEN_IDENTIFIER, // variable names, etc
+    // literals
     TOKEN_NUMBER, // numbers like 82374875 or 3.14159
     TOKEN_STRING, // strings like "hello, world"
+
+    TOKEN_TRUE, // boolean true
+    TOKEN_FALSE, // boolean false
+
+    // void is the equivalent of not storing anything
+    // in terms of memory consumption, null is just after "void" if we sort from lowest to highest mem usage
+    // lets say it was measured in arbitrary units: null = 0, void = 1
+    TOKEN_VOID, // void - dealloc from memory, complete absence of value
+    TOKEN_NULL, // "null" keyword, type, and value
 
     // keywords
     TOKEN_PRIVATE, TOKEN_VAR, TOKEN_ALIAS,
@@ -67,14 +76,6 @@ typedef enum {
     TOKEN_RETURN,
     TOKEN_THIS,
 
-    TOKEN_TRUE, // boolean true
-    TOKEN_FALSE, // boolean false
-
-    // void is the equivalent of not storing anything
-    // in terms of memory consumption, null is just after "void" if we sort from lowest to highest mem usage
-    TOKEN_VOID, // void - dealloc from memory, complete absence of value
-    TOKEN_NULL, // "null" keyword, type, and value
-    
     TOKEN_FUNCTION, // "function" keyword, type, and constructor for new functions
 
     // type keywords

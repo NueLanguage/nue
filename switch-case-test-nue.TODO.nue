@@ -1,0 +1,19 @@
+private var string testing = "yeah"
+
+match testing {
+    case "yeah" {
+        print("yeah")
+    }
+
+    case "no" {
+        print("no")
+    }
+
+    case "watafak bro" {
+        print("watafak bro")
+    }
+
+    case {
+        print("default")
+    }
+}

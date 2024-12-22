@@ -541,13 +541,13 @@ Token scanToken(Lexer* lexer) {
         case '+':
             if (match(lexer, '+')) return makeToken(lexer, TOKEN_PLUS_PLUS, NULL);
             if (match(lexer, '=')) return makeToken(lexer, TOKEN_PLUS_EQ, NULL);
-            return makeToken(lexer, TOKEN_PLUS, NULL); // neither decrement nor syntactic sygar, therefore it is a regular plus
+            return makeToken(lexer, TOKEN_PLUS, NULL); // not increment or syntactic sugar; therefore it is a regular plus
         
         case '-':
             if (match(lexer, '-')) return makeToken(lexer, TOKEN_MINUS_MINUS, NULL);
-            if (match(lexer, '>')) return makeToken(lexer, TOKEN_ARROW, NULL);
             if (match(lexer, '=')) return makeToken(lexer, TOKEN_MINUS_EQ, NULL);
-            return makeToken(lexer, TOKEN_MINUS, NULL); // neither an arrow nor syntactic sugar, therefore it is a regular minus
+            if (match(lexer, '>')) return makeToken(lexer, TOKEN_ARROW, NULL);
+            return makeToken(lexer, TOKEN_MINUS, NULL); // not decrement, syntactic sugar or arrow; therefore it is a regular minus
 
         case '*': return makeToken(lexer, match(lexer, '=') ? TOKEN_STAR_EQ : TOKEN_STAR, NULL);
         // this assumes that comments have been effectively handled in skipWhitespace(). therefore, if we have ended up here in the scanToken() function, then that means it is definitely a division operator.

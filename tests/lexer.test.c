@@ -93,6 +93,16 @@ const char* tokenTypeToString(TokenType type) {
 
 
 
+        case TOKEN_TRUE: return "TRUE";
+        case TOKEN_FALSE: return "FALSE";
+
+
+
+        case TOKEN_VOID: return "VOID";
+        case TOKEN_NULL: return "NULL";
+
+
+
         case TOKEN_PRIVATE: return "PRIVATE";
         case TOKEN_VAR: return "VAR";
         case TOKEN_ALIAS: return "ALIAS";
@@ -105,15 +115,6 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_BREAK: return "BREAK";
         case TOKEN_RETURN: return "RETURN";
         case TOKEN_THIS: return "THIS";
-
-
-
-        case TOKEN_TRUE: return "TRUE";
-        case TOKEN_FALSE: return "FALSE";
-
-
-        case TOKEN_VOID: return "VOID";
-        case TOKEN_NULL: return "NULL";
 
 
 
