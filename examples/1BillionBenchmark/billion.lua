@@ -33,7 +33,7 @@ local startedAt = epoch()
 
 local total = 0
 for i = 1, 1000000000 do
-    total = total + i ^ 2
+    total = total + i * i
 end
 
 local taken = epoch() - startedAt

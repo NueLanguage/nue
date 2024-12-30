@@ -329,7 +329,7 @@ static Token string(Lexer* lexer, char quote) {
                 advance(lexer);
                 matchedQuotes++;
             }
-
+            
             if (matchedQuotes == quoteCount) {
                 // STRING END (TERMINATION)
                 buffer[bufferIndex] = '\0'; // null terminate the string

@@ -9,7 +9,13 @@ It is advised that you run the benchmark yourself on your own hardware to provid
 
 ## Results
 
+TODO: clarify that "Valid Result" means equating to the actual expected number (333333...etc)
+TODO: re-run all of the tests outside of vscode because vscode shell uses a lot of resources for some odd reason
+
 | Programming Language | Optimisations | Time (sec) | Result | Valid Result |
 |-|-|-|-|-|
-| Python |   | `47.040361` | `333333333833333333500000000` | ✅ |
 | Lua (Luvit) | LuaJIT | `0.353087` | `3.3333333383336e+26` | ✅ |
+| Python |   | `47.040361` | `333333333833333333500000000` | ✅ |
+| JavaScript | nodeJS | `77.65400004386902` | `333333333833333333500000000` | ✅ |
+| TypeScript | ts-node | `70.665999889` | `333333333833333333349161825` | ✅ |
+| Ruby |   | `108.687818289` | `333333333833333333500000000` | ✅ |
