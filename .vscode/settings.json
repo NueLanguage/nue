@@ -3,6 +3,8 @@
         "**/._*": true,
     },
 
+    // nue files are temporarily associated with swift as they *might* have the closest resemblance
+    // at least, thats what vscode automatically detects nue code as when I open a nue file
     "files.associations": {
         "*.nu": "swift",
         "*.nue": "swift"

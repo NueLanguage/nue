@@ -3,6 +3,9 @@
 /tests/*.test
 /tests/*.test.exe
 
+.vscode/c_cpp_properties.json
+
+
 # macOS Files
 **/._*
 **/.DS*
@@ -60,4 +63,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-.vscode/c_cpp_properties.json
