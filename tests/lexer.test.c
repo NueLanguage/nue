@@ -26,6 +26,7 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_RBRACKET: return "RBRACKET";
         case TOKEN_COMMA: return "COMMA";
         case TOKEN_DOT: return "DOT";
+        case TOKEN_DOT_DOT: return "RANGE";
         case TOKEN_SEMICOLON: return "SEMICOLON";
 
 
@@ -106,15 +107,22 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_PRIVATE: return "PRIVATE";
         case TOKEN_VAR: return "VAR";
         case TOKEN_ALIAS: return "ALIAS";
+        
         case TOKEN_IF: return "IF";
         case TOKEN_ELSE: return "ELSE";
+
         case TOKEN_FOR: return "FOR";
         case TOKEN_IN: return "IN";
+        case TOKEN_STEP: return "STEP";
+
         case TOKEN_WHILE: return "WHILE";
         case TOKEN_CONTINUE: return "CONTINUE";
         case TOKEN_BREAK: return "BREAK";
+
         case TOKEN_RETURN: return "RETURN";
+
         case TOKEN_THIS: return "THIS";
+
         case TOKEN_MATCH: return "MATCH";
         case TOKEN_CASE: return "CASE";
 

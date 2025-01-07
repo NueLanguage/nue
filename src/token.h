@@ -13,6 +13,7 @@ typedef enum {
     TOKEN_LBRACKET, TOKEN_RBRACKET, // []
     TOKEN_COMMA, // ,
     TOKEN_DOT, // .
+    TOKEN_DOT_DOT, // .. (range operator), note that the "step" keyword is optional. if not provided, either 1 or -1 is used as the default step value
     TOKEN_SEMICOLON, // ; (optional, separates multiple statements on one line)
 
     // one or two character tokens
@@ -68,13 +69,20 @@ typedef enum {
 
     // keywords
     TOKEN_PRIVATE, TOKEN_VAR, TOKEN_ALIAS,
+    
     TOKEN_IF, TOKEN_ELSE,
+
     TOKEN_FOR, TOKEN_IN,
+    TOKEN_STEP, // step keyword for range stepping, accompanied by TOKEN_DOT_DOT
+
     TOKEN_WHILE,
     TOKEN_CONTINUE,
     TOKEN_BREAK,
+
     TOKEN_RETURN,
+
     TOKEN_THIS,
+
     TOKEN_MATCH, // match keyword for pattern matching
     TOKEN_CASE, // case keyword for pattern matching
 

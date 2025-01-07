@@ -503,6 +503,7 @@ static Token identifier(Lexer* lexer) {
 
     if (length == 3 && strncmp(lexer->start, "for", 3) == 0) return makeToken(lexer, TOKEN_FOR, NULL);
     if (length == 2 && strncmp(lexer->start, "in", 2) == 0) return makeToken(lexer, TOKEN_IN, NULL);
+    if (length == 4 && strncmp(lexer->start, "step", 4) == 0) return makeToken(lexer, TOKEN_STEP, NULL);
 
     if (length == 5 && strncmp(lexer->start, "while", 5) == 0) return makeToken(lexer, TOKEN_WHILE, NULL);
     if (length == 8 && strncmp(lexer->start, "continue", 8) == 0) return makeToken(lexer, TOKEN_CONTINUE, NULL);
@@ -548,7 +549,9 @@ Token scanToken(Lexer* lexer) {
 
         case ';': return makeToken(lexer, TOKEN_SEMICOLON, NULL);
         case ',': return makeToken(lexer, TOKEN_COMMA, NULL);
-        case '.': return makeToken(lexer, TOKEN_DOT, NULL);
+        // TODO: implement the .. operator
+        // ranges seem to be mistaken for numbers. as a result, an error is thrown because the lexer finds too many "decimal points" (there are two) when in reality its just ".." in something like "1..10"
+        case '.': return makeToken(lexer, match(lexer, '.') ? TOKEN_DOT_DOT : TOKEN_DOT, NULL);
 
         case '+':
             if (match(lexer, '+')) return makeToken(lexer, TOKEN_PLUS_PLUS, NULL);
