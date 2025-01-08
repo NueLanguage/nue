@@ -42,7 +42,7 @@ print(dotTestTable.quantity) // output: 5
 // basically, it is used for iteration
 // the first number is the starting number, the second number is the ending number
 // for example, this would iterate from 1 to 10, inclusive.
-for i in 1..10 {
+for i in 1 .. 10 {
     print(i)
 }
 // output: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
@@ -525,7 +525,7 @@ match myTestToMatch2 {
 
 // testing of TOKEN_STEP
 // this is used in conjunction with the TOKEN_DOT_DOT for iteration
-for i in 1..100 step 2 {
+for i in 1 .. 100 step 2 {
     print(i)
 }
 
