@@ -27,6 +27,7 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_COMMA: return "COMMA";
         case TOKEN_DOT: return "DOT";
         case TOKEN_DOT_DOT: return "RANGE";
+        case TOKEN_ELLPISIS: return "ELLIPSIS";
         case TOKEN_SEMICOLON: return "SEMICOLON";
 
 
@@ -85,6 +86,10 @@ const char* tokenTypeToString(TokenType type) {
 
 
         case TOKEN_ARROW: return "ARROW";
+
+
+
+        case TOKEN_QUESTION_MARK: return "NULLABLE";
 
 
 

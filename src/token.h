@@ -14,6 +14,7 @@ typedef enum {
     TOKEN_COMMA, // ,
     TOKEN_DOT, // .
     TOKEN_DOT_DOT, // .. (range operator), note that the "step" keyword is optional. if not provided, either 1 or -1 is used as the default step value
+    TOKEN_ELLPISIS, // ... (variadic arguments)
     TOKEN_SEMICOLON, // ; (optional, separates multiple statements on one line)
 
     // one or two character tokens
@@ -52,6 +53,8 @@ typedef enum {
     TOKEN_LENGTH, // # (length operator)
 
     TOKEN_ARROW, // -> (used for function return types)
+
+    TOKEN_QUESTION_MARK, // ? (used for nullability)
 
     TOKEN_IDENTIFIER, // variable names, etc
     // literals

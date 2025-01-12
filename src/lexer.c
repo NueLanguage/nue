@@ -549,10 +549,9 @@ Token scanToken(Lexer* lexer) {
 
         case ';': return makeToken(lexer, TOKEN_SEMICOLON, NULL);
         case ',': return makeToken(lexer, TOKEN_COMMA, NULL);
-        // TODO: implement the .. operator
-        // ranges seem to be mistaken for numbers. as a result, an error is thrown because the lexer finds too many "decimal points" (there are two) when in reality its just ".." in something like "1..10"
-        case '.': return makeToken(lexer, match(lexer, '.') ? TOKEN_DOT_DOT : TOKEN_DOT, NULL);
-
+        case '.':
+            if (match(lexer, '.')) return makeToken(lexer, match(lexer, '.') ? TOKEN_ELLPISIS : TOKEN_DOT_DOT, NULL);
+            return makeToken(lexer, TOKEN_DOT, NULL);
         case '+':
             if (match(lexer, '+')) return makeToken(lexer, TOKEN_PLUS_PLUS, NULL);
             if (match(lexer, '=')) return makeToken(lexer, TOKEN_PLUS_EQ, NULL);
@@ -582,6 +581,8 @@ Token scanToken(Lexer* lexer) {
         case '|': return makeToken(lexer, match(lexer, '|') ? TOKEN_OR : TOKEN_XOR, NULL);
 
         case '#': return makeToken(lexer, TOKEN_LENGTH, NULL);
+
+        case '?': return makeToken(lexer, TOKEN_QUESTION_MARK, NULL);
     }
 
     // handle number literals

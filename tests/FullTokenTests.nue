@@ -287,6 +287,18 @@ private function myNewFunction(string input, number something) -> boolean {
     }
 }
 
+// testing of TOKEN_QUESTION_MARK
+private function nameOrNothing() -> string? {
+    if math.random(1, 100) < 50 {
+        return "John"
+    } else {
+        return
+    }
+}
+private var string? randomName = nameOrNothing() // either "John" or null
+// this is the same as doing this:
+// private var [string, null] randomName = nameOrNothing()
+
 // testing of TOKEN_IDENTIFIER
 // an identifier is the name of a variable or a function, etc
 private var string myIdentifier = "im a string stored in the variable myIdentifier"
@@ -553,14 +565,14 @@ print(canHoldNumberAndNull) // output: null
 // testing of TOKEN_FUNCTION
 // this is specifically the TYPE keyword for a function
 // can also be a constructor for functions
-private function calculateAverage(table *cacca) -> number {
+private function calculateAverage(...) -> number {
     // you might think that this is needed, but because we have explicitly declared a type,
     // nue expects AT LEAST one argument
     //if !(#numbers >= 1) { error("At least one number must be provided!") }
 
     private var number sum = 0
 
-    for num in cacca {
+    for num in {...} {
         sum += num
     }
 
@@ -568,16 +580,18 @@ private function calculateAverage(table *cacca) -> number {
 }
 print(calculateAverage(1, 2, 3, 4, 5)) // output: 3
 
-private function anotherFunction(table *something) -> void {
-    print(table.unpack(something))
+// testing of TOKEN_ELLIPSIS
+private function anotherFunction(...) -> void {
+    private var table things = table.pack(...)
+    print(things)
 }
 
-private function callAnotherFunction(table *varargumentos) -> void {
-    anotherFunction(table.unpack(varargumentos))
+private function callAnotherFunction(...) -> void {
+    anotherFunction(...)
 }
 
-private function oneConstantArgumentAndTheRestIsUnknown(number yes, table *varargsss) -> void {
-    anotherFunction(yes * 5, table.unpack(varargsss))
+private function oneConstantArgumentAndTheRestIsUnknown(number yes, ...) -> void {
+    anotherFunction(yes * 5, ...)
 }
 
 // testing of TOKEN_TABLE
