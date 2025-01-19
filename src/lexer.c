@@ -58,10 +58,8 @@ static void skipWhitespace(Lexer* lexer) {
             case '/': // possible start of a comment or division operator
                 if (peekNext(lexer) == '/') {
                     advance(lexer); // consume first '/'
-                    // TODO: changed from if (peek(lexer) == '#) {}
                     if (peekNext(lexer) == '#') { // multi-line comment
                         advance(lexer); // consume second '/'
-                        // TODO: added an extra consumption here
                         advance(lexer); // consume '#'
                         while (!isAtEnd(lexer) && !(peek(lexer) == '#' && peekNext(lexer) == '/' && lexer->current[2] == '/')) {
                             if (peek(lexer) == '\n') lexer->line++;
@@ -87,7 +85,8 @@ static void skipWhitespace(Lexer* lexer) {
 }
 
 // match current character with expected character
-// TODO: concerns about this function
+// TODO: concerns about this function: should it advance after simply matching?
+// just match() by itself implies were only checking rather than affecting the state of the lexer
 static bool match(Lexer* lexer, char expected) {
     if (isAtEnd(lexer)) return false;
     if (peek(lexer) != expected) return false;
@@ -115,10 +114,8 @@ static Token errorToken(Lexer* lexer, const char* message) {
     return token;
 }
 
-// https://trello.com/c/SxTSWtIl
-// TODO (LIKELY CANCELLED - stupid idea, also not necessary and chaotic at the deeper level): handle numbers differently later on. check trello board.
 static Token number(Lexer* lexer) {
-    // this function became so un-maintainable i've decided to actually comment it for better uhhh.. brainability?
+    // this function became so un-maintainable i've decided to actually comment it for better uhhh.. comprehension?
     bool hasDot = false;
     bool isHex = false;
     bool isBinary = false;
@@ -289,7 +286,6 @@ static Token number(Lexer* lexer) {
 }
 
 // scan a string
-// TODO: escape sequences
 // TODO: follow lua's convention of ignoring whitespace and newline on first line and allowing newlines on other lines
 // tabs / indentation shall be ignored too in multiline strings
 // CLEAN THIS CODE UP
@@ -480,7 +476,6 @@ static Token string(Lexer* lexer, char quote) {
 }
 
 // scan identifier or keyword
-// TODO: get variables names and put them into the lexeme or literal property
 static Token identifier(Lexer* lexer) {
     // you might question whether the identifier function allows identifiers to start with a number...
     // however thats not the case because in the scanToken we initially check with isalpha() which doesnt allow numbers
@@ -589,7 +584,6 @@ Token scanToken(Lexer* lexer) {
     if (isdigit(c)) return number(lexer);
 
     // handle string literals
-    // TODO: implement single quotes, and other ways of writing strings. maybe multi line strings?
     if (c == '"' || c == '\'') return string(lexer, c);
 
     // handle identifiers and keywords
