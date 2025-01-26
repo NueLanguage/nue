@@ -594,6 +594,31 @@ private function oneConstantArgumentAndTheRestIsUnknown(number yes, ...) -> void
     anotherFunction(yes * 5, ...)
 }
 
+private var table mySetOfCompanies = {
+	{"John", "The John Company, Co.", 25, {day = 4, month = 10, year = 1990}},
+	{"Sandra", "The Sandra Foundation", 30, {day = 26, month = 11, year = 1991}},
+	{"Alfred", "Alfred Financing Inc.", 35, {day = 6, month = 12, year = 1992}},
+	{"Karina", "Karina Dance Studio, Limited", 43, {day = 16, month = 3, year = 1998}},
+}
+
+private function eachInCompanySet() -> function {
+	private var number index = 1
+
+	// a function which simply returns a boolean and the rest is variadic
+	// very convenient because we dont have to create any empty values manually, nor do we need to manually specify nullable types
+	return function() -> boolean, ... {
+		if index > #mySetOfCompanies { return false }
+		private var table row = mySetOfCompanies[index]
+		index++
+		return true, row[1], row[2], row[3], row[4]
+	}
+}
+
+// EXAMPLE ON HOW TO USE ITERATOR STATE WRAPPER FUNCTION
+for owner, company_name, points, incorporated in eachInCompanySet() {
+	print(owner, company_name, points, incorporated.year)
+}
+
 // testing of TOKEN_TABLE
 // this is specifically the TYPE keyword for a table
 private var table tableTokenTest = {}
