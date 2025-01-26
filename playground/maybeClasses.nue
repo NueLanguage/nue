@@ -1,0 +1,23 @@
+class Instance {
+    private var string instanceName
+
+    function Instance(string instanceName) -> void {
+        this.instanceName = instanceName
+    }
+}
+
+class Sound (Instance) {
+    private var number assetId
+
+    function Sound(number soundId) -> void {
+        this.assetId = soundId
+    }
+
+    function exclaim(string sus) -> void {
+        print(sus)
+    }
+}
+
+private var Sound something = Sound("asset://384834")
+something.exclaim("omg")
+
