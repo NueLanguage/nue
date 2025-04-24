@@ -3,7 +3,7 @@
 # get start time in seconds with nanoseconds as fractional part
 start=$(gdate +%s.%N)
 
-./lexer.test farter.nue
+./lexer.test FullTokenTests.nue
 
 end=$(gdate +%s.%N)
 
