@@ -9,6 +9,5 @@ end=$(gdate +%s.%N)
 
 elapsed=$(echo "$end - $start" | bc -l) # calculate difference in seconds
 elapsed_ms=$(echo "$elapsed * 1000" | bc -l)
-elapsed_ns=$(echo "$elapsed * 1000000000" | bc -l)
 
-echo "Elapsed time: $elapsed_ms milliseconds, $elapsed_ns nanoseconds"
+echo "Elapsed time: $elapsed_ms milliseconds"
