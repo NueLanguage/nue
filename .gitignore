@@ -64,3 +64,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 TODO.md
+nue_ebnf2.ebnf

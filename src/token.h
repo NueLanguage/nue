@@ -98,6 +98,8 @@ typedef enum {
     TOKEN_STRING_TYPE,
     TOKEN_ANY, // denotes something which accepts any type
 
+    TOKEN_AS, // type casting
+
     // miscellaneous
     TOKEN_EOF, // end of file
     TOKEN_ERROR // error or unknown token

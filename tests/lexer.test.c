@@ -16,7 +16,7 @@
 #define EXPORT __attribute__((visibility("default")))
 #endif
 
-const char* tokenTypeToString(TokenType type) {
+const char* tokenTypeString(TokenType type) {
     switch (type) {
         case TOKEN_LPAREN: return "LPAREN";
         case TOKEN_RPAREN: return "RPAREN";
@@ -145,6 +145,9 @@ const char* tokenTypeToString(TokenType type) {
         case TOKEN_ANY: return "ANY";
 
 
+        case TOKEN_AS: return "AS";
+
+
 
         case TOKEN_EOF: return "EOF";
         case TOKEN_ERROR: return "ERROR";
@@ -157,7 +160,8 @@ const char* tokenTypeToString(TokenType type) {
 
 int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
 
-EXPORT char* codeToLexString(const char* source) {
+// this is purely for when this file is compiled as a library, serves no use in the actual repl binary itself
+EXPORT char* exportTokenisedStr(const char* source) {
     Lexer lexer;
     initLexer(&lexer, source);
 
@@ -177,7 +181,7 @@ EXPORT char* codeToLexString(const char* source) {
         token = scanToken(&lexer);
 
         // ensure the buffer can accomodate the next tokens formatted string
-        size_t requiredSize = bufferUsed + 128; // assuming
+        size_t requiredSize = bufferUsed + 128; // assuming here kinda
         if (requiredSize > bufferSize) {
             bufferSize *= 2;
             buffer = (char*)realloc(buffer, bufferSize);
@@ -188,7 +192,7 @@ EXPORT char* codeToLexString(const char* source) {
         }
 
         // append token info to buffer
-        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "[Line %d] %s '%s'", token.line, tokenTypeToString(token.type), token.lexeme);
+        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
 
         if (token.literal != NULL) {
             if (token.type == TOKEN_NUMBER) {
@@ -199,7 +203,7 @@ EXPORT char* codeToLexString(const char* source) {
         }
         bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "\n");
 
-        // free token resources
+        // cleanup
         free(token.lexeme);
         if (token.literal != NULL) {
             if (token.type == TOKEN_NUMBER) {
@@ -215,7 +219,7 @@ EXPORT char* codeToLexString(const char* source) {
 
 #ifndef SHARED_LIBRARY
 void printToken(Token token) {
-    printf("[Line %d] %s '%s'", token.line, tokenTypeToString(token.type), token.lexeme);
+    printf("[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
 
     if (token.literal != NULL) {
         if (token.type == TOKEN_NUMBER) {
@@ -229,13 +233,13 @@ void printToken(Token token) {
     printf("\n");
 }
 
-void printUnusedTokens() {
+void printUnused() {
     printf("Unused tokens: ");
     bool first = true;
     for (int i = 0; i < TOKEN_TYPE_COUNT; i++) {
         if (!usedTokenTypes[i]) {
             if (!first) printf(", ");
-            printf("%s", tokenTypeToString(i));
+            printf("%s", tokenTypeString(i));
             first = false;
         }
     }
@@ -243,7 +247,7 @@ void printUnusedTokens() {
     printf("\n");
 }
 
-void printTokenUsage() {
+void printUsage() {
     int uniqueTokensUsed = 0;
     for (int i = 0; i < TOKEN_TYPE_COUNT; i++) {
         if (usedTokenTypes[i]) uniqueTokensUsed++;
@@ -252,11 +256,11 @@ void printTokenUsage() {
     int percentage = (uniqueTokensUsed * 100) / TOKEN_TYPE_COUNT;
 
     printf("You have used %d out of %d token types. (%d%%)\n", uniqueTokensUsed, TOKEN_TYPE_COUNT, percentage);
-    printUnusedTokens();
+    printUnused();
     printf("\n");
 }
 
-void runLexerOnInput(const char* source) {
+void tokeniseInput(const char* source) {
     Lexer lexer;
     initLexer(&lexer, source);
 
@@ -282,7 +286,7 @@ void runLexerOnInput(const char* source) {
     } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
 }
 
-void runRepl(bool silent) {
+void repl(bool silent) {
     printf("Nue Lexer REPL - Type code below or 'exit' to quit.\n");
 
     while (true) {
@@ -302,11 +306,11 @@ void runRepl(bool silent) {
             add_history(line);
         }
 
-        runLexerOnInput(line);
+        tokeniseInput(line);
 
         if (!silent) {
             printf("\n");
-            printTokenUsage();
+            printUsage();
             printf("\n");
         }
 
@@ -314,14 +318,13 @@ void runRepl(bool silent) {
     }
 }
 
-void runFile(const char* filename, bool silent) {
+void evalFile(const char* filename, bool silent) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
         fprintf(stderr, "Could not open source file '%s'\n", filename);
         exit(1);
     }
 
-    // read entire file
     fseek(file, 0L, SEEK_END);
     size_t fileSize = ftell(file);
     rewind(file);
@@ -338,13 +341,13 @@ void runFile(const char* filename, bool silent) {
     source[fileSize] = '\0'; // null terminate the string
     fclose(file);
 
-    runLexerOnInput(source);
+    tokeniseInput(source);
     free(source);
 
     if (!silent) {
         // print stats
         printf("--------------------------------------------------\n");
-        printTokenUsage();
+        printUsage();
     }
 }
 
@@ -352,7 +355,6 @@ int main(int argc, char* argv[]) {
     bool silent = false;
     const char* filename = NULL;
 
-    // Simple argument parsing
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--silent") == 0) {
             silent = true;
@@ -366,13 +368,13 @@ int main(int argc, char* argv[]) {
         char response;
         if (scanf(" %c", &response) && (response == 'y' || response == 'Y')) {
             getchar(); // clear newline from input buffer
-            runRepl(silent);
+            repl(silent);
         } else {
             printf("Exiting.\n");
             return 0;
         }
     } else {
-        runFile(filename, silent);
+        evalFile(filename, silent);
     }
 
     return 0;
