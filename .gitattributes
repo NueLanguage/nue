@@ -1,3 +1,2 @@
 *.nu linguist-language=nue
 *.nue linguist-language=nue
-old/examples/1BillionBenchmark/* linguist-ignored
