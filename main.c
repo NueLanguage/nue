@@ -213,17 +213,35 @@ int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
 // }
 
 void printToken(const Token token) {
-    printf("[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
+    const char* COLOUR_LINE     = "\x1b[38;5;244m";  // grey
+    const char* COLOUR_TYPE     = "\x1b[38;5;81m";   // cyan
+    const char* COLOUR_STRING   = "\x1b[38;5;197m";  // pink
+    const char* COLOUR_NUMBER   = "\x1b[38;5;141m";  // lavender
+    const char* COLOUR_LEXEME   = "\x1b[38;5;114m";  // green-ish
+    const char* COLOUR_ERROR    = "\x1b[38;5;196m";  // bright red
+    const char* COLOUR_RESET    = "\x1b[0m";
+
+    printf("%s%4d%s  ", COLOUR_LINE, token.line, COLOUR_RESET);
+    printf("%s%-16s%s  ", COLOUR_TYPE, tokenTypeString(token.type), COLOUR_RESET);
+
+    if (token.type == TOKEN_STRING) {
+        printf("%s'%s'%s", COLOUR_STRING, token.lexeme, COLOUR_RESET);
+    } else if (token.type == TOKEN_NUMBER) {
+        printf("%s'%s'%s", COLOUR_NUMBER, token.lexeme, COLOUR_RESET);
+    } else if (token.type == TOKEN_ERROR) {
+        printf("%s'%s'%s", COLOUR_ERROR, token.lexeme, COLOUR_RESET);
+    } else {
+        printf("%s'%s'%s", COLOUR_LEXEME, token.lexeme, COLOUR_RESET);
+    }
 
     if (token.literal != NULL) {
         if (token.type == TOKEN_NUMBER) {
-            printf(" (%f)", *(double*)token.literal);
+            printf("  %s(%f)%s", COLOUR_NUMBER, *(double*)token.literal, COLOUR_RESET);
         } else if (token.type == TOKEN_STRING) {
-            printf(" ('%s')", (char*)token.literal);
+            printf("  %s('%s')%s", COLOUR_STRING, (char*)token.literal, COLOUR_RESET);
         }
-    } //else {
-        //printf(" (null)");
-    //}
+    }
+
     printf("\n");
 }
 
