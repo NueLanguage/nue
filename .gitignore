@@ -10,3 +10,4 @@ nue_ebnf2.ebnf
 
 # CLion things
 cmake-build-debug
+.idea/editor.xml

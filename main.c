@@ -293,8 +293,6 @@ void tokeniseInput(const char* source) {
 }
 
 void repl(const bool silent) {
-    printf("Nue Lexer REPL - Type code below or 'exit' to quit.\n");
-
     while (1) {
         char* line = linenoise("> ");
         if (!line) {
@@ -361,21 +359,16 @@ int main(const int argc, char* argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--silent") == 0) {
             silent = true;
+            printf("Running in silent mode.\n");
         } else {
             filename = argv[i];
         }
     }
 
     if (filename == NULL) {
-        printf("No source file provided. Do you want to start REPL mode? (y/n): ");
-        char response;
-        if (scanf(" %c", &response) && (response == 'y' || response == 'Y')) {
-            getchar(); // clear newline from input buffer
-            repl(silent);
-        } else {
-            printf("Exiting.\n");
-            return 0;
-        }
+        printf("No source file was provided. REPL mode will begin.\n");
+        printf("Nue Tokeniser REPL - Type code below or 'exit' to quit.\n");
+        repl(silent);
     } else {
         evalFile(filename, silent);
     }
