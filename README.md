@@ -42,6 +42,9 @@ This will print all the tokens used in a provided nue file:
 ```shell
 nue file.nue
 ```
+
+![Screenshot 2025-05-22 at 23 13 43](https://github.com/user-attachments/assets/fa12ef33-b7b1-42dd-9157-be5d9512dd79)
+
 ## ⚠️ Disclaimer
 
 This project is in early development and is subject to significant changes. Use or reference the code at your own risk, as it may contain incomplete features, broken C code and licensing conflicts. (don't want to anger the Stallman wannabes, do I?)
