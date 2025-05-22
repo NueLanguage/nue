@@ -28,8 +28,8 @@ const char* tokenTypeString(const TokenType type) {
 
         case TOKEN_PLUS: return "PLUS";
         case TOKEN_MINUS: return "MINUS";
-        case TOKEN_PLUS_PLUS: return "INCREMENT";
-        case TOKEN_MINUS_MINUS: return "DECREMENT";
+        case TOKEN_PLUS_PLUS: return "INCREASE";
+        case TOKEN_MINUS_MINUS: return "DECREASE";
         case TOKEN_PLUS_EQ: return "PLUS_EQ";
         case TOKEN_MINUS_EQ: return "MINUS_EQ";
 
