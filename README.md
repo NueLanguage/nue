@@ -1,38 +1,45 @@
 # 🍑 nue
 
-The nue Programming Language
+The Nue Programming Language
 
-**Nue** is an experimental programming language designed with simplicity and versatility in mind. The goal is to create a modern yet lightweight language that supports a wide range of use cases. While still in its early stages, Nue aims to be both fun and functional for developers who want to explore a fresh take on programming paradigms.
+**Nue** is an experimental programming language designed with simplicity and versatility in mind. The goal is to create a modern yet lightweight language that supports a wide range of use cases and doesn't compromise any advanced functionality in favour of simple language design.
 
-[What does nue look like? (coming soon)](./LEARN.md)
+<!-- [What does nue look like? (coming soon)](./LEARN.md) -->
 
 ## 🚦 Project Status
-Nue is currently in development, with a primary focus on building the core components such as the lexer and parser to a functional state.
+
+Nue is currently in development, with a primary focus on building the core components such as the tokeniser and parser to a functional state.
 
 Functionality is currently being prioritised over organisation, which means:
-- **License Notice**
-    - A license is still being decided for this project
-    - **Disclaimer**: There is likely to be license incompatibility during the development phase due to the use of various libraries and components without extensive legal consideration. Once the first Nue program is executed flawlessly:
-        - All dependencies will be reviewed for licensing compatibility
-        - The repository will be organised to ensure clarity and compliance
-- **Lexer Testing**
-    - The `tests/lexer.test.c` program currently uses **GNU Readline** to provide line history and inline editing for testing and debugging purposes. This may also raise licensing concerns, which will be addressed during the repository cleanup phase.
 
-## ⭐️ Current Features
-- **Lexer**
-    - Parses tokens for numbers (including decimals, hex, binary, and octal)
-    - Recognises various operators, keywords, and identifiers
-    - Supports escape sequences for strings (WORK IN PROGRESS)
-- **REPL Testing**
-    - A simple REPL to test lexing capabilities interactively, with support for history and editing, powered by GNU Readline.
-    - Specify the `--silent` argument when running to silence token usage statistics
+- There is likely to be licence incompatibility during the development phase due to the potential (future) use of various libraries and components
 
-## 📝 Contribution Guidelines
+Once Nue is "finished" (i.e. in a basic working state), the repository will be re-organised, and all dependencies will be reviewed for licensing compatibility.
 
-Due to the unorganised nature of the project at this stage, contributions are not yet open. However, we welcome **feedback, ideas, and suggestions** in the form of issues or discussions on the repository. Stay tuned for updates on how you can get involved!
+## Testing the Tokeniser/Lexer
 
-Suggestions are also occasionally taken in from the social channels of the creator.
+Currently, the main entry point of the entire project is the original tokeniser itself, with some extra features.
 
+### As a standalone REPL
+```shell
+nue
+```
+
+Running `nue` opens a REPL which allows you to test the functionality of the current tokeniser. If you run it without any arguments, it will prompt you whether you would like to open REPL mode.
+
+> [!NOTE]
+>
+> ```shell
+> nue --silent
+> ```
+>
+> Running the `nue` repl with the `--silent` argument removes token usage statistics being printed upon every new line in REPL mode
+
+### Testing with a nue file
+This will print all the tokens used in a provided nue file:
+```shell
+nue file.nue
+```
 ## ⚠️ Disclaimer
 
-This project is in early development and is subject to significant changes. Use or reference the code at your own risk, as it may contain incomplete features, broken C code and licensing conflicts. (dont want to anger Stallman, do I?)
+This project is in early development and is subject to significant changes. Use or reference the code at your own risk, as it may contain incomplete features, broken C code and licensing conflicts. (don't want to anger the Stallman wannabes, do I?)
