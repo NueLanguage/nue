@@ -25,7 +25,7 @@ Currently, the main entry point of the entire project is the original tokeniser 
 nue
 ```
 
-Running `nue` opens a REPL which allows you to test the functionality of the current tokeniser. If you run it without any arguments, it will prompt you whether you would like to open REPL mode.
+Running `nue` without any arguments opens a REPL which allows you to test the functionality of the current tokeniser.
 
 ![Screenshot 2025-05-22 at 23 10 39](https://github.com/user-attachments/assets/962a43c8-fc3f-4f95-9a4e-73a3e3789e37)
 
