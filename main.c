@@ -2,21 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <stdarg.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "../src/lexer.h"
-#include "../src/token.h"
+
+#include "linenoise.h"
+
+#include "nue/tokeniser.h"
+#include "nue/token.h"
 
 #define TOKEN_TYPE_COUNT (TOKEN_ERROR + 1) // total
 
-#ifdef _WIN32
-#define EXPORT __declspec(dllexport)
-#else
-#define EXPORT __attribute__((visibility("default")))
-#endif
-
-const char* tokenTypeString(TokenType type) {
+const char* tokenTypeString(const TokenType type) {
     switch (type) {
         case TOKEN_LPAREN: return "LPAREN";
         case TOKEN_RPAREN: return "RPAREN";
@@ -27,7 +21,7 @@ const char* tokenTypeString(TokenType type) {
         case TOKEN_COMMA: return "COMMA";
         case TOKEN_DOT: return "DOT";
         case TOKEN_DOT_DOT: return "RANGE";
-        case TOKEN_ELLPISIS: return "ELLIPSIS";
+        case TOKEN_ELLIPSIS: return "ELLIPSIS";
         case TOKEN_SEMICOLON: return "SEMICOLON";
 
 
@@ -112,7 +106,7 @@ const char* tokenTypeString(TokenType type) {
         case TOKEN_PRIVATE: return "PRIVATE";
         case TOKEN_VAR: return "VAR";
         case TOKEN_ALIAS: return "ALIAS";
-        
+
         case TOKEN_IF: return "IF";
         case TOKEN_ELSE: return "ELSE";
 
@@ -153,72 +147,72 @@ const char* tokenTypeString(TokenType type) {
         case TOKEN_ERROR: return "ERROR";
 
 
-        
-        default: return "UNKNOWN_TOKEN";
+
+        default: return "UNKNOWN";
     }
 }
 
 int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
 
 // this is purely for when this file is compiled as a library, serves no use in the actual repl binary itself
-EXPORT char* exportTokenisedStr(const char* source) {
-    Lexer lexer;
-    initLexer(&lexer, source);
+// temporarily removed shared library export; will be re-added sometime later
+// char* exportTokenisedStr(const char* source) {
+//     Tokeniser lexer;
+//     initTokeniser(&lexer, source);
+//
+//     Token token;
+//     size_t bufferSize = 1024;
+//     size_t bufferUsed = 0;
+//     char* buffer = (char*)malloc(bufferSize);
+//
+//     if (!buffer) {
+//         fprintf(stderr, "Memory allocation failed\n");
+//         exit(1);
+//     }
+//
+//     buffer[0] = '\0';
+//
+//     do {
+//         token = scanToken(&lexer);
+//
+//         // ensure the buffer can accommodate the next tokens formatted string
+//         const size_t requiredSize = bufferUsed + 128; // we are kind of assuming here that this is okay
+//         if (requiredSize > bufferSize) {
+//             bufferSize *= 2;
+//             buffer = (char*)realloc(buffer, bufferSize);
+//             if (!buffer) {
+//                 fprintf(stderr, "Memory allocation failed\n");
+//                 exit(1);
+//             }
+//         }
+//
+//         // append token info to buffer
+//         bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
+//
+//         if (token.literal != NULL) {
+//             if (token.type == TOKEN_NUMBER) {
+//                 bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " (%f)", *(double*)token.literal);
+//             } else if (token.type == TOKEN_STRING) {
+//                 bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " ('%s')", (char*)token.literal);
+//             }
+//         }
+//         bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "\n");
+//
+//         // cleanup
+//         free(token.lexeme);
+//         if (token.literal != NULL) {
+//             if (token.type == TOKEN_NUMBER) {
+//                 free(token.literal);
+//             } else if (token.type == TOKEN_STRING) {
+//                 free(token.literal);
+//             }
+//         }
+//     } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
+//
+//     return buffer; // the caller should free this
+// }
 
-    Token token;
-    size_t bufferSize = 1024;
-    size_t bufferUsed = 0;
-    char* buffer = (char*)malloc(bufferSize);
-
-    if (!buffer) {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(1);
-    }
-
-    buffer[0] = '\0';
-
-    do {
-        token = scanToken(&lexer);
-
-        // ensure the buffer can accomodate the next tokens formatted string
-        size_t requiredSize = bufferUsed + 128; // assuming here kinda
-        if (requiredSize > bufferSize) {
-            bufferSize *= 2;
-            buffer = (char*)realloc(buffer, bufferSize);
-            if (!buffer) {
-                fprintf(stderr, "Memory allocation failed\n");
-                exit(1);
-            }
-        }
-
-        // append token info to buffer
-        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
-
-        if (token.literal != NULL) {
-            if (token.type == TOKEN_NUMBER) {
-                bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " (%f)", *(double*)token.literal);
-            } else if (token.type == TOKEN_STRING) {
-                bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, " ('%s')", (char*)token.literal);
-            }
-        }
-        bufferUsed += snprintf(buffer + bufferUsed, bufferSize - bufferUsed, "\n");
-
-        // cleanup
-        free(token.lexeme);
-        if (token.literal != NULL) {
-            if (token.type == TOKEN_NUMBER) {
-                free((double*)token.literal);
-            } else if (token.type == TOKEN_STRING) {
-                free((char*)token.literal);
-            }
-        }
-    } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
-
-    return buffer; // the caller should free this
-}
-
-#ifndef SHARED_LIBRARY
-void printToken(Token token) {
+void printToken(const Token token) {
     printf("[Line %d] %s '%s'", token.line, tokenTypeString(token.type), token.lexeme);
 
     if (token.literal != NULL) {
@@ -253,7 +247,7 @@ void printUsage() {
         if (usedTokenTypes[i]) uniqueTokensUsed++;
     }
 
-    int percentage = (uniqueTokensUsed * 100) / TOKEN_TYPE_COUNT;
+    const int percentage = (uniqueTokensUsed * 100) / TOKEN_TYPE_COUNT;
 
     printf("You have used %d out of %d token types. (%d%%)\n", uniqueTokensUsed, TOKEN_TYPE_COUNT, percentage);
     printUnused();
@@ -261,8 +255,8 @@ void printUsage() {
 }
 
 void tokeniseInput(const char* source) {
-    Lexer lexer;
-    initLexer(&lexer, source);
+    Tokeniser lexer;
+    initTokeniser(&lexer, source);
 
     Token token;
     do {
@@ -273,38 +267,29 @@ void tokeniseInput(const char* source) {
         if (token.type >= 0 && token.type < TOKEN_TYPE_COUNT) {
             usedTokenTypes[token.type] = 1;
         }
-        
+
         // free token resources
         free(token.lexeme);
-        if (token.literal != NULL) {
-            if (token.type == TOKEN_NUMBER) {
-                free((double*)token.literal);
-            } else if (token.type == TOKEN_STRING) {
-                free((char*)token.literal);
-            }
-        }
+        if (token.literal != NULL) free(token.literal);
     } while (token.type != TOKEN_EOF && token.type != TOKEN_ERROR);
 }
 
-void repl(bool silent) {
+void repl(const bool silent) {
     printf("Nue Lexer REPL - Type code below or 'exit' to quit.\n");
 
-    while (true) {
-        // use readline to get input with line editing capabilities (big upgrade)
-        char* line = readline("> ");
+    while (1) {
+        char* line = linenoise("> ");
         if (!line) {
             break; // EOF or error
         }
 
         if (strcmp(line, "exit") == 0) {
+            printf("Bye!\n");
             free(line);
             break;
         }
 
-        // add non-empty lines to history
-        if (line[0] != '\0') {
-            add_history(line);
-        }
+        linenoiseHistoryAdd(line);
 
         tokeniseInput(line);
 
@@ -318,7 +303,7 @@ void repl(bool silent) {
     }
 }
 
-void evalFile(const char* filename, bool silent) {
+void evalFile(const char* filename, const bool silent) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
         fprintf(stderr, "Could not open source file '%s'\n", filename);
@@ -326,10 +311,10 @@ void evalFile(const char* filename, bool silent) {
     }
 
     fseek(file, 0L, SEEK_END);
-    size_t fileSize = ftell(file);
+    const size_t fileSize = ftell(file);
     rewind(file);
 
-    char* source = (char*)malloc(fileSize + 1);
+    char* source = malloc(fileSize + 1);
     if (!source) {
         fprintf(stderr, "Memory allocation failed\n");
         fclose(file);
@@ -337,8 +322,8 @@ void evalFile(const char* filename, bool silent) {
     }
     fread(source, sizeof(char), fileSize, file);
 
-    // this isnt necessary, however we add an extra terminator just incase someone catastrophically saved without a terminator
-    source[fileSize] = '\0'; // null terminate the string
+    // this isn't necessary; however, we add an extra terminator just incase someone catastrophically saved without a terminator
+    source[fileSize] = '\0'; // null terminates the string
     fclose(file);
 
     tokeniseInput(source);
@@ -351,7 +336,7 @@ void evalFile(const char* filename, bool silent) {
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(const int argc, char* argv[]) {
     bool silent = false;
     const char* filename = NULL;
 
@@ -379,4 +364,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-#endif
