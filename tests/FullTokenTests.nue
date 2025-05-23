@@ -660,6 +660,14 @@ thisAcceptsAnything = 32
 thisAcceptsAnything = null
 thisAcceptsAnything = {"a", 5, 324}
 
+// testing of TOKEN_AS
+// the "as" keyword allows you to cast something of one type to another
+// for example, you may cast a number to a string
+private var number threeHundred = 300
+private var string hundred3 = threeHundred as string // "300"
+
+print(420 + ("300" as number)) // 720
+
 // testing of TOKEN_ERROR
 0o789 // Invalid octal number
 0o856 // Invalid octal number
