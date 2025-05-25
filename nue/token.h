@@ -112,7 +112,8 @@ typedef enum {
 // token structure. stores information about each token
 typedef struct {
     TokenType type; // the type of the token
-    char *lexeme; // literal text of the token
+    char *lexeme; // text of the token
+    // TODO: change "literal" to value
     void *literal; // literal value of the token
     int line; // the line number in the source file
 } Token;
