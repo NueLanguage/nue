@@ -8,6 +8,14 @@
 #include "nue/tokeniser.h"
 #include "nue/token.h"
 
+const char* COLOUR_GREY     = "\x1b[38;5;244m";  // grey
+const char* COLOUR_CYAN     = "\x1b[38;5;81m";   // cyan
+const char* COLOUR_PINK   = "\x1b[38;5;197m";  // pink
+const char* COLOUR_LAVENDER   = "\x1b[38;5;141m";  // lavender
+const char* COLOUR_GREEN   = "\x1b[38;5;114m";  // green-ish
+const char* COLOUR_RED_BRIGHT    = "\x1b[38;5;196m";  // bright red
+const char* COLOUR_RESET    = "\x1b[0m";
+
 #define TOKEN_TYPE_COUNT (TOKEN_ERROR + 1) // total
 
 const char* tokenTypeString(const TokenType type) {
@@ -213,32 +221,24 @@ int usedTokenTypes[TOKEN_TYPE_COUNT] = {0};
 // }
 
 void printToken(const Token token) {
-    const char* COLOUR_LINE     = "\x1b[38;5;244m";  // grey
-    const char* COLOUR_TYPE     = "\x1b[38;5;81m";   // cyan
-    const char* COLOUR_STRING   = "\x1b[38;5;197m";  // pink
-    const char* COLOUR_NUMBER   = "\x1b[38;5;141m";  // lavender
-    const char* COLOUR_LEXEME   = "\x1b[38;5;114m";  // green-ish
-    const char* COLOUR_ERROR    = "\x1b[38;5;196m";  // bright red
-    const char* COLOUR_RESET    = "\x1b[0m";
-
-    printf("%s%4d%s  ", COLOUR_LINE, token.line, COLOUR_RESET);
-    printf("%s%-16s%s  ", COLOUR_TYPE, tokenTypeString(token.type), COLOUR_RESET);
+    printf("%s%4d%s  ", COLOUR_GREY, token.line, COLOUR_RESET);
+    printf("%s%-16s%s  ", COLOUR_CYAN, tokenTypeString(token.type), COLOUR_RESET);
 
     if (token.type == TOKEN_STRING) {
-        printf("%s'%s'%s", COLOUR_STRING, token.lexeme, COLOUR_RESET);
+        printf("%s'%s'%s", COLOUR_PINK, token.lexeme, COLOUR_RESET);
     } else if (token.type == TOKEN_NUMBER) {
-        printf("%s'%s'%s", COLOUR_NUMBER, token.lexeme, COLOUR_RESET);
+        printf("%s'%s'%s", COLOUR_LAVENDER, token.lexeme, COLOUR_RESET);
     } else if (token.type == TOKEN_ERROR) {
-        printf("%s'%s'%s", COLOUR_ERROR, token.lexeme, COLOUR_RESET);
+        printf("%s'%s'%s", COLOUR_RED_BRIGHT, token.lexeme, COLOUR_RESET);
     } else {
-        printf("%s'%s'%s", COLOUR_LEXEME, token.lexeme, COLOUR_RESET);
+        printf("%s'%s'%s", COLOUR_GREEN, token.lexeme, COLOUR_RESET);
     }
 
     if (token.literal != NULL) {
         if (token.type == TOKEN_NUMBER) {
-            printf("  %s(%f)%s", COLOUR_NUMBER, *(double*)token.literal, COLOUR_RESET);
+            printf("  %s(%f)%s", COLOUR_LAVENDER, *(double*)token.literal, COLOUR_RESET);
         } else if (token.type == TOKEN_STRING) {
-            printf("  %s('%s')%s", COLOUR_STRING, (char*)token.literal, COLOUR_RESET);
+            printf("  %s('%s')%s", COLOUR_PINK, (char*)token.literal, COLOUR_RESET);
         }
     }
 
@@ -265,7 +265,7 @@ void printUsage() {
         if (usedTokenTypes[i]) uniqueTokensUsed++;
     }
 
-    const int percentage = (uniqueTokensUsed * 100) / TOKEN_TYPE_COUNT;
+    const int percentage = uniqueTokensUsed * 100 / TOKEN_TYPE_COUNT;
 
     printf("You have used %d out of %d token types. (%d%%)\n", uniqueTokensUsed, TOKEN_TYPE_COUNT, percentage);
     printUnused();
