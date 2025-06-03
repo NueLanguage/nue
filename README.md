@@ -48,3 +48,13 @@ nue file.nue
 ## ⚠️ Disclaimer
 
 This project is in early development and is subject to significant changes. Use or reference the code at your own risk, as it may contain incomplete features, broken C code and licensing conflicts. (don't want to anger the Stallman wannabes, do I?)
+
+## Legal & Licensing
+
+Nue is licensed under the Apache 2.0 License.
+
+The "Nue" name, logo, and branding are trademarks of **Numelon Ltd.** and are not included in the open-source license. Any legal disputes regarding the Nue project are to be handled under the jurisdiction of the United Kingdom and governed by the laws of England and Wales.
+
+Contributions to the Nue project are welcome! By contributing, you agree that your contributions are licensed under the same Apache 2.0 License, and you grant Numelon Ltd. and other users a license to use your contributions as part of Nue.
+
+If you have any questions about licensing or usage, please reach out to us at [opensource@numelon.com](mailto:opensource@numelon.com).
