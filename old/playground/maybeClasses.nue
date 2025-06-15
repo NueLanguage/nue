@@ -1,5 +1,5 @@
 class Instance {
-    private var string instanceName
+    var string instanceName
 
     function Instance(string instanceName) -> void {
         this.instanceName = instanceName
@@ -7,7 +7,7 @@ class Instance {
 }
 
 class Sound (Instance) {
-    private var number assetId
+    var number assetId
 
     function Sound(number soundId) -> void {
         this.assetId = soundId
@@ -18,6 +18,6 @@ class Sound (Instance) {
     }
 }
 
-private var Sound something = Sound("asset://384834")
+var Sound something = Sound("asset://384834")
 something.exclaim("omg")
 

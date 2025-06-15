@@ -1,7 +1,7 @@
 // Define a complex function to analyze and categorize text based on various metrics
-private var function analyzeText = function(string text) -> number, string {
-    private var number length = #text
-    private var string longOrShort
+var function analyzeText = function(string text) -> number, string {
+    var number length = #text
+    var string longOrShort
 
     if length > 100 {
         longOrShort = "Very Long"
@@ -15,8 +15,8 @@ private var function analyzeText = function(string text) -> number, string {
 }
 
 // Function to reverse a string
-private var function reverseString = function(string original) -> string {
-    private var string reversed = ""
+var function reverseString = function(string original) -> string {
+    var string reversed = ""
     for i in range(1, #original + 1) {
         reversed = original[i] + reversed
     }
@@ -24,7 +24,7 @@ private var function reverseString = function(string original) -> string {
 }
 
 // Use table to store multiple types of data
-private var table myTable = {
+var table myTable = {
     name = "nue User",
     age = 30,
     interests = {"coding", "reading", "gaming"},
@@ -46,19 +46,19 @@ for interest in myTable.interests {
 myTable.interests += {"music", "traveling"}
 
 // Accessing and using the description function
-private var string userProfile = myTable.description()
+var string userProfile = myTable.description()
 print("Profile Description:", userProfile)
 
 // Analyzing a text sample
-private var string sampleText = "This is a sample text for nue, designed to showcase the language's capabilities and flexibility."
-private var number textLength, string textCategory = analyzeText(sampleText)
+var string sampleText = "This is a sample text for nue, designed to showcase the language's capabilities and flexibility."
+var number textLength, string textCategory = analyzeText(sampleText)
 print("Sample Text Analysis:")
 print("Text Length:", textLength)
 print("Category:", textCategory)
 
 // Demonstrating text reversal
-private var string originalText = "Hello, nue!"
-private var string reversedText = reverseString(originalText)
+var string originalText = "Hello, nue!"
+var string reversedText = reverseString(originalText)
 print("Original Text:", originalText)
 print("Reversed Text:", reversedText)
 

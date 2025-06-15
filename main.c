@@ -112,7 +112,6 @@ const char* tokenTypeString(const TokenType type) {
 
 
         case TOKEN_PRIVATE: return "PRIVATE";
-        case TOKEN_VAR: return "VAR";
         case TOKEN_ALIAS: return "ALIAS";
 
         case TOKEN_IF: return "IF";

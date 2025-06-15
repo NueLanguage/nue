@@ -1,17 +1,17 @@
-private var table enum = import("discord").enums
-private var table util = import("discord-slash").util.tools()
+var table enum = import("discord").enums
+var table util = import("discord-slash").util.tools()
 // not sure if we will have to import standard libraries in the future
-private var table strings = import("strings")
-private var table tables = import("tables")
+var table strings = import("strings")
+var table tables = import("tables")
 
-private var function cleanString = function(string str) -> string {
+var function cleanString = function(string str) -> string {
     str = strings.substitute(str, "\239\184\143", "")
     return str
 }
 
-private var function areCommandTablesTheSame = function(table commandsTable, table constructed) -> boolean {
-    private var function arrayMap = function(table arr) -> table {
-        private var table arrmap = {}
+var function areCommandTablesTheSame = function(table commandsTable, table constructed) -> boolean {
+    var function arrayMap = function(table arr) -> table {
+        var table arrmap = {}
 
         for i,v in arrmap {
             arrmap[v] = true
@@ -35,13 +35,13 @@ private var function areCommandTablesTheSame = function(table commandsTable, tab
     }
 
     // implement slash
-    private var table ct_slash = {}
+    var table ct_slash = {}
     for _, v in commandsTable.slash {
         ct_slash[v.name] = v
         ct_slash[v.name].name = null
     }
 
-    private var table c_slash = {}
+    var table c_slash = {}
     for _, v in constructed.slash {
         c_slash[v.name] = v
         c_slash[v.name].name = null
@@ -51,20 +51,20 @@ private var function areCommandTablesTheSame = function(table commandsTable, tab
 }
 
 // were using the "any" type for client because we dont have a custom client type defined for this example
-private var function handleApplicationCommands = function(any client, table commandsTable) -> null {
+var function handleApplicationCommands = function(any client, table commandsTable) -> null {
     print("TODO: bla bla")
     print("more bla bla")
 
-    private var table globalApplicationCommands = client.getGlobalApplicationCommands()
+    var table globalApplicationCommands = client.getGlobalApplicationCommands()
 
-    private var table constructed = {}
+    var table constructed = {}
     for _, v in globalApplicationCommands {
         if v.printableType == "Slash command" {
             if constructed.slash == null {
                 constructed.slash = {}
             }
             
-            private var table command = {
+            var table command = {
                 name = v.name,
                 description = v.description
             }
@@ -81,7 +81,7 @@ private var function handleApplicationCommands = function(any client, table comm
                     }
 
                     if v.choices {
-                        private var table newChoices = {}
+                        var table newChoices = {}
 
                         for _, choice in v.choices {
                             newChoices[choice.value] = choice.name
@@ -110,9 +110,9 @@ private var function handleApplicationCommands = function(any client, table comm
         }
     }
 
-    private var function printTable = function(table tbl, number indent) -> null {
+    var function printTable = function(table tbl, number indent) -> null {
         indent = indent || 0
-        private var string indentStr = strings.repeat(" ", indent)
+        var string indentStr = strings.repeat(" ", indent)
 
         for k, v in tbl {
             if typeof(v) == "table" {

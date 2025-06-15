@@ -1,7 +1,7 @@
 // Character inventory system in Nue
-private var [table, number, null] tables = {}
+var [table, number, null] tables = {}
 
-private var table Character = {
+var table Character = {
     name = "Arin",
     level = 12,
     health = 100,
@@ -13,7 +13,7 @@ private var table Character = {
 
     // Function to add items to the inventory
     addItem = function(string itemName, number quantity) -> null {
-        private var boolean itemFound = false
+        var boolean itemFound = false
         for item in this.inventory {
             if item.itemName == itemName {
                 item.quantity += quantity
@@ -61,7 +61,7 @@ Character.addItem("Potion", 2)
 Character.displayInventory()
 
 print("Removing 1 Sword:")
-private var result, message = Character.removeItem("Sword", 1)
+var result, message = Character.removeItem("Sword", 1)
 print(message)
 Character.displayInventory()
 

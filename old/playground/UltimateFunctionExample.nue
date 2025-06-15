@@ -1,7 +1,7 @@
-private var function sumAndBiggerThan = function(number x, number y) -> number, [boolean, null] {
-    private var number sum = x + y
+var function sumAndBiggerThan = function(number x, number y) -> number, [boolean, null] {
+    var number sum = x + y
     
-    private var [boolean, null] bigger
+    var [boolean, null] bigger
     if x < y {
         bigger = false
     } else if x > y {

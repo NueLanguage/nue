@@ -1,14 +1,14 @@
-private var [number, table, string, null] nullablepPi = 3.14159265358979323846264338327950288419716939937510
-private var string myName = "John"
-private var string mySurname = "Doe"
+var [number, table, string, null] nullablepPi = 3.14159265358979323846264338327950288419716939937510
+var string myName = "John"
+var string mySurname = "Doe"
 
-private var string privateString = "lmao"
+var string privateString = "lmao"
 private alias aliasedString = privateString
 
-private var number myvar = 8374.33
+var number myvar = 8374.33
 
 if 1 < 2 {
-    private var number ifelsethenthis = 883
+    var number ifelsethenthis = 883
 } else {
     var table randomArray = {
         {}, {}, {}, {}, {}

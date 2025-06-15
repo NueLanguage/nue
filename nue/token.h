@@ -75,7 +75,7 @@ typedef enum {
     TOKEN_NULL, // "null" keyword, type, and value
 
     // keywords
-    TOKEN_PRIVATE, TOKEN_VAR, TOKEN_ALIAS,
+    TOKEN_PRIVATE, TOKEN_ALIAS,
 
     TOKEN_IF, TOKEN_ELSE,
 

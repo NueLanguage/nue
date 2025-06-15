@@ -490,7 +490,6 @@ static Token identifier(Lexer* lexer) {
     if (length == 4 && strncmp(lexer->start, "null", 4) == 0) return makeToken(lexer, TOKEN_NULL, NULL);
 
     if (length == 7 && strncmp(lexer->start, "private", 7) == 0) return makeToken(lexer, TOKEN_PRIVATE, NULL);
-    if (length == 3 && strncmp(lexer->start, "var", 3) == 0) return makeToken(lexer, TOKEN_VAR, NULL);
     if (length == 5 && strncmp(lexer->start, "alias", 5) == 0) return makeToken(lexer, TOKEN_ALIAS, NULL);
 
     if (length == 2 && strncmp(lexer->start, "if", 2) == 0) return makeToken(lexer, TOKEN_IF, NULL);

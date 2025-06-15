@@ -4,25 +4,25 @@ print("hi guys!")
 
 // testing of TOKEN_LBRACE, TOKEN_RBRACE
 // usually used for tables or delimiting code blocks
-private var table myTable = {} // an empty table
+private table myTable = {} // an empty table
 if true {
     print("tested TOKEN_LBRACE and TOKEN_RBRACE!")
 }
 
 // testing of TOKEN_LBRACKET and TOKEN_RBRACKET
 // usually used for type whitelists or indexing a table
-private var table bracketsTable = {
+private table bracketsTable = {
     hello = "hi!!"
 }
 print(bracketsTable["hello"]) // output: hi!!
 
-private var [number, string] acceptsMultipleTypes = "I accept multiple types!"
+private [number, string] acceptsMultipleTypes = "I accept multiple types!"
 acceptsMultipleTypes = 123
 
 // testing of TOKEN_COMMA
 // usually used to separate arguments provided to functions or for stuff inside tables
 print("hello, the next number is:", 5)
-private var table commaTable = {
+private table commaTable = {
     hi = "hello", // notice we are using commas to separate items in a table
     aNumber = 6, // think of it like speaking in english: you use commas to make a list
     anotherthing = 300
@@ -30,7 +30,7 @@ private var table commaTable = {
 
 // testing of TOKEN_DOT
 // usually used to a table
-private var table dotTestTable = {
+private table dotTestTable = {
     item = "Something",
     quantity = 5
 }
@@ -54,7 +54,7 @@ use of semicolons is heavily discouraged in nue because it makes code look a bit
 (and we dont want to copy the syntax of C-like programming languages)
 #//
 // please only ever use semicolons when you really NEED to put statements on one line
-private var number semicolonNumber = 6; print(semicolonNumber); print(semicolonNumber++)
+private number semicolonNumber = 6; print(semicolonNumber); print(semicolonNumber++)
 
 // testing of TOKEN_PLUS
 // basic arithmetic: addition
@@ -66,21 +66,21 @@ print(12 - 7) // output: 5
 
 // testing of TOKEN_PLUS_PLUS
 // increment: add 1 to whatever is incremented and assign the new value
-private var number plusplusNumber = 67
+private number plusplusNumber = 67
 plusplusNumber++ // plusplusNumber is now 68
 // doing ++ also returns the new value, so you can also use it in things like function arguments
 print(plusplusNumber++) // output: 69
 
 // testing of TOKEN_MINUS_MINUS
 // decrement: subtract 1 from whatever is decremented and assign the new value
-private var number minusminusNumber = 71
+private number minusminusNumber = 71
 minusminusNumber-- // minusminusNumber is now 70
 // doing -- also returns the new value, so you can also use it in things like function arguments
 print(minusminusNumber--) // output: 69
 
 // testing of TOKEN_PLUS_EQ
 // increment by x: similar to increment, except you get to specify what you increment something by
-private var number pluseqNumber = 15
+private number pluseqNumber = 15
 pluseqNumber += 5 // pluseqNumber is now 20
 print(pluseqNumber) // output: 20
 // TODO: check trello https://trello.com/c/DJOUtuJz
@@ -89,7 +89,7 @@ print(pluseqNumber) // output: 20
 
 // testing of TOKEN_MINUS_EQ
 // decrement by x: similar to decrement, except you get to specify what you decrement something by
-private var number minuseqNumber = 35
+private number minuseqNumber = 35
 minuseqNumber -= 10 // minuseqNumber is now 25
 print(minuseqNumber) // output: 25
 // TODO: check trello https://trello.com/c/DJOUtuJz
@@ -106,7 +106,7 @@ print(100 / 10) // output: 10
 
 // testing of TOKEN_STAR_EQ
 // multiplication by x: multiply something by x and assign the result to something
-private var number stareqNumber = 30
+private number stareqNumber = 30
 stareqNumber *= 3 // stareqNumber is now 90
 print(stareqNumber) // output: 90
 // TODO: check trello https://trello.com/c/DJOUtuJz
@@ -115,7 +115,7 @@ print(stareqNumber) // output: 90
 
 // testing of TOKEN_SLASH_EQ
 // division by x: divide something by x and assign the result to something
-private var number slasheqNumber = 60
+private number slasheqNumber = 60
 slasheqNumber /= 5 // slasheqNumber is now 12
 print(slasheqNumber) // output: 12
 // TODO: check trello https://trello.com/c/DJOUtuJz
@@ -128,7 +128,7 @@ print(5^3) // output: 125
 
 // testing of TOKEN_POWER_EQ
 // exponentiation by x: exponentiate something by x and assign the result to something
-private var number powereqNumber = 9
+private number powereqNumber = 9
 powereqNumber ^= 2 // powereqNumber is now 81
 print(powereqNumber) // output: 81
 // TODO: check trello https://trello.com/c/DJOUtuJz
@@ -145,7 +145,7 @@ print(10 \ 3) // output: 3, because 3 only goes into 10 fully 3 times
 
 // testing of TOKEN_EQ
 // commonly used only for assignment
-private var boolean assignTested = true
+private boolean assignTested = true
 
 // testing of TOKEN_EQ_EQ
 // commonly only used for equality 
@@ -184,7 +184,7 @@ if true | false | false {
 print(!true) // output: false
 print(!false) // output: true
 
-private var boolean enabled = true
+private boolean enabled = true
 if enabled {
     print("disabling...")
     enabled = !enabled
@@ -241,10 +241,10 @@ if 7 >= 6 {
 
 // testing of TOKEN_LENGTH
 // length operator, finds the length of something, e.g. a table, a string, etc
-private var string myLengthStringTest = "thisIsATest"
+private string myLengthStringTest = "thisIsATest"
 print(#myLengthStringTest) // output: 11
 
-private var table myLengthTableTest = {
+private table myLengthTableTest = {
     "this is something",
     1,
     5,
@@ -264,7 +264,7 @@ print(#myLengthTableTest) // output: 9
 // the idea behind this was that functions would be first class citizens which would be assigned to a variable, just like any other type
 // and then you could call the function by using the function name, e.g. myEpicFunction()
 // dont worry - this way still works!
-private var function myOldFunction = function(string input, number something) -> boolean {
+private function myOldFunction = function(string input, number something) -> boolean {
     print(input)
 
     if something > 5 {
@@ -295,13 +295,13 @@ private function nameOrNothing() -> string? {
         return
     }
 }
-private var string? randomName = nameOrNothing() // either "John" or null
+private string? randomName = nameOrNothing() // either "John" or null
 // this is the same as doing this:
-// private var [string, null] randomName = nameOrNothing()
+// private [string, null] randomName = nameOrNothing()
 
 // testing of TOKEN_IDENTIFIER
 // an identifier is the name of a variable or a function, etc
-private var string myIdentifier = "im a string stored in the variable myIdentifier"
+private string myIdentifier = "im a string stored in the variable myIdentifier"
 // the identifier here is "myIdentifier"
 
 print(myIdentifier)
@@ -327,19 +327,16 @@ print(0b10) // output: 2
 
 // testing of TOKEN_STRING
 print("Hello world!")
-private var string myTestMessage = "hey guys"
+private string myTestMessage = "hey guys"
 print(myTestMessage) // output: hey guys
 
 // testing of TOKEN_PRIVATE
-private var number notImportant = 2
-
-// testing of TOKEN_VAR
-var number notImportantAgain = 3
+private number notImportant = 2
 
 // testing of TOKEN_ALIAS
 // a very nice feature in nue, makes a reference to another varibale
 // (aka points to the same memory location as another variable)
-private var boolean isAmazing = true
+private boolean isAmazing = true
 private alias iMadeAnAlias = isAmazing
 print(isAmazing, iMadeAnAlias) // output: true, true
 iMadeAnAlias = false
@@ -361,7 +358,7 @@ if false {
 }
 
 // testing of TOKEN_FOR
-private var table myTebel = {
+private table myTebel = {
     "a",
     "b",
     "c",
@@ -383,7 +380,7 @@ d
 
 #//
 
-private var table myOtherTable = {
+private table myOtherTable = {
     hello = "world",
     test = "testing",
     yes = true,
@@ -410,7 +407,7 @@ if "bye" in {"bye", "no"} {
 
 // an example of the "in" keyword being used in a for loop, quite common practice
 // except this uses a sophisticated, custom iterator and state wrapper
-private var table mySetOfCompanies = {
+private table mySetOfCompanies = {
 	{"John", "The John Company, Co.", 25, {day = 4, month = 10, year = 1990}},
 	{"Sandra", "The Sandra Foundation", 30, {day = 26, month = 11, year = 1991}},
 	{"Alfred", "Alfred Financing Inc.", 35, {day = 6, month = 12, year = 1992}},
@@ -418,13 +415,13 @@ private var table mySetOfCompanies = {
 }
 
 private function eachInCompanySet() -> function {
-	private var number index = 1
+	private number index = 1
 
 	// a function which simply returns a boolean and the rest is variadic
 	// very convenient because we dont have to create any empty values manually, nor do we need to manually specify nullable types
 	return function() -> boolean, ... {
 		if index > #mySetOfCompanies { return false }
-		private var table row = mySetOfCompanies[index]
+		private table row = mySetOfCompanies[index]
 		index++
 		return true, row[1], row[2], row[3], row[4]
 	}
@@ -436,7 +433,7 @@ for owner, company_name, points, incorporated in eachInCompanySet() {
 }
 
 // testing of TOKEN_WHILE
-private var number counter = 0
+private number counter = 0
 while true {
     counter++
 
@@ -469,7 +466,7 @@ private function returnTrue() -> boolean {
 print(returnTrue()) // output: true
 
 // testing of TOKEN_THIS
-private var table myLibrary = {
+private table myLibrary = {
     firstThing = function(number hello) -> boolean {
         if hello == 1 {
             return true
@@ -489,7 +486,7 @@ private var table myLibrary = {
     },
 
     calculateAverage = function() -> number {
-        private var number sum = 0
+        private number sum = 0
         for num in this.data {
             sum += num
         }
@@ -506,7 +503,7 @@ print(true) // output: true
 print(false) // output: false
 
 // testing of TOKEN_MATCH
-private var string myTestToMatch = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
+private string myTestToMatch = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
 match myTestToMatch {
     case "hello" {
         print("hello")
@@ -535,7 +532,7 @@ match myTestToMatch {
 
 // testing of TOKEN_CASE
 // this is used in conjunction with the match keyword
-private var string myTestToMatch2 = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
+private string myTestToMatch2 = {"hello", "hi", "bonjour", "greetings", "hey"}[math.random(1, 5)]
 match myTestToMatch2 {
     case "hello" {
         print("hello")
@@ -571,7 +568,7 @@ for i in 1 .. 100 step 2 {
 // testing of TOKEN_VOID
 // the "void" keyword is used to denote the complete absence of a value such as a function not returning anything
 // also used to denote deallocation of a variable
-private var string deallocateMePlease = "hey there, i will be deallocated!"
+private string deallocateMePlease = "hey there, i will be deallocated!"
 deallocateMePlease = void
 
 private function printAndDontReturn(string toPrint) -> void {
@@ -583,7 +580,7 @@ private function printAndDontReturn(string toPrint) -> void {
 // this can also be the TYPE keyword for a table
 // this is NOT the same as void
 // void takes up ZERO memory. null takes up a tiny bit of memory but it is negligible
-private var [number, null] canHoldNumberAndNull = 9394
+private [number, null] canHoldNumberAndNull = 9394
 print(canHoldNumberAndNull) // output: 9394
 canHoldNumberAndNull = null
 print(canHoldNumberAndNull) // output: null
@@ -597,7 +594,7 @@ private function calculateAverage(...) -> number {
     // nue expects AT LEAST one argument
     //if !(#numbers >= 1) { error("At least one number must be provided!") }
 
-    private var number sum = 0
+    private number sum = 0
 
     for num in {...} {
         sum += num
@@ -609,7 +606,7 @@ print(calculateAverage(1, 2, 3, 4, 5)) // output: 3
 
 // testing of TOKEN_ELLIPSIS
 private function anotherFunction(...) -> void {
-    private var table things = table.pack(...)
+    private table things = table.pack(...)
     print(things)
 }
 
@@ -622,8 +619,8 @@ private function oneConstantArgumentAndTheRestIsUnknown(number yes, ...) -> void
 }
 
 private function customIterator(...) -> function {
-    private var table args = {...}
-    private var number index = 1
+    private table args = {...}
+    private number index = 1
 
     return function() -> boolean, any? {
         if index > #args { return false }
@@ -638,24 +635,24 @@ for value in customIterator(1, "test", null, 3.14) {
 
 // testing of TOKEN_TABLE
 // this is specifically the TYPE keyword for a table
-private var table tableTokenTest = {}
+private table tableTokenTest = {}
 
 // testing of TOKEN_BOOLEAN
 // this is specifically the TYPE keyword for a boolean
-private var boolean epic = true
+private boolean epic = true
 
 // testing of TOKEN_NUMBER_TYPE
 // this is specifically the TYPE keyword for a number
-private var number pi = 3.14159
+private number pi = 3.14159
 
 // testing of TOKEN_STRING_TYPE
 // this is specifically the TYPE keyword for a string
-private var string greeting1000 = "greetings my fellow!"
+private string greeting1000 = "greetings my fellow!"
 
 // testing of TOKEN_ANY
 // this is specifically the TYPE keyword for anything
 // variables that declare "any" as the type(s) will accept any type
-private var any thisAcceptsAnything  = "hi"
+private any thisAcceptsAnything  = "hi"
 thisAcceptsAnything = 32
 thisAcceptsAnything = null
 thisAcceptsAnything = {"a", 5, 324}
@@ -663,8 +660,8 @@ thisAcceptsAnything = {"a", 5, 324}
 // testing of TOKEN_AS
 // the "as" keyword allows you to cast something of one type to another
 // for example, you may cast a number to a string
-private var number threeHundred = 300
-private var string hundred3 = threeHundred as string // "300"
+private number threeHundred = 300
+private string hundred3 = threeHundred as string // "300"
 
 print(420 + ("300" as number)) // 720
 

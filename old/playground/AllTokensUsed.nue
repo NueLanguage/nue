@@ -1,6 +1,6 @@
 // 17 out of 58 token types used so far, 17 new tokens introduced:
-// PRIVATE VAR IDENTIFIER EQ FUNCTION LPAREN STRING_TYPE COMMA NUMBER_TYPE BOOLEAN RPAREN ARROW LBRACKET STRING_TYPE TABLE RBRACKET LBRACE
-private var fart = function(string cac, number ok, boolean fart) -> boolean, [string, table] {
+// var IDENTIFIER EQ FUNCTION LPAREN STRING_TYPE COMMA NUMBER_TYPE BOOLEAN RPAREN ARROW LBRACKET STRING_TYPE TABLE RBRACKET LBRACE
+var fart = function(string cac, number ok, boolean fart) -> boolean, [string, table] {
     // 20 out of 58 token types used so far, 3 new tokens introduced:
     // RETURN TRUE STRING
     return true, "hi"
@@ -10,13 +10,13 @@ private var fart = function(string cac, number ok, boolean fart) -> boolean, [st
 
 // 23 out of 58 token types used so far, 2 new tokens introduced:
 // SEMICOLON NUMBER
-private var test = 1; private var anotherTest = 2
-private var table myTab = {name = "john", surname = "doe", concat = function() -> string { return this.name + " " + this.surname } }
-private var myNum = 3.1415999219219387874282374823492374897
-private var myNum = 500; myNum += 1; myNum -= 1; print(myNum) //# should print 500 #//; myNum /= 5; myNum *= 5; print(myNum) //# should still be 500 #//
-private var num2 = 5; private var num3 = 10; print(num2 + num3); print(num3 - num2); print(num3 / num2); print(5^2) //# should print 25 #//
-private var num4 = 6; print(num4 * 7); print(num4 ^ 2)
-private var num5 = 6; num5 ^= 2
+var test = 1; var anotherTest = 2
+var table myTab = {name = "john", surname = "doe", concat = function() -> string { return this.name + " " + this.surname } }
+var myNum = 3.1415999219219387874282374823492374897
+var myNum = 500; myNum += 1; myNum -= 1; print(myNum) //# should print 500 #//; myNum /= 5; myNum *= 5; print(myNum) //# should still be 500 #//
+var num2 = 5; var num3 = 10; print(num2 + num3); print(num3 - num2); print(num3 / num2); print(5^2) //# should print 25 #//
+var num4 = 6; print(num4 * 7); print(num4 ^ 2)
+var num5 = 6; num5 ^= 2
 if 5 == 5 { print(true & true) }
 print(true || false)
 print(true | false)
@@ -26,13 +26,13 @@ if 5 < 3 { print("idk how that happened") } else { print("yay") }
 if 5 > 3 { print(true) }
 if 3 >= 5 { print("what") } else { print('yep') }
 if 3 <= 5 { print("yes") }
-private var table caca = {"ha", "hi"}; print(#caca) // 2
-private var string hello = "hi"; private alias newHi = hello; newHi = "peep"; print(hello) // peep
+var table caca = {"ha", "hi"}; print(#caca) // 2
+var string hello = "hi"; private alias newHi = hello; newHi = "peep"; print(hello) // peep
 if true {} else {}
 for i,v in {} {}
 while true {break}
-private var any hi = null; delete(hi)
+var any hi = null; delete(hi)
 // 57 out of 58 token types used so far, 1 new token introduced:
 // ERROR
-private var number test = 3.123123.213.213123
+var number test = 3.123123.213.213123
 "a
