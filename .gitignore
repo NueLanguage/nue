@@ -8,6 +8,9 @@ nue_ebnf2.ebnf
 **/._*
 **/.DS*
 
+# VSCode things
+build
+
 # CLion things
 cmake-build-debug
 .idea/editor.xml
