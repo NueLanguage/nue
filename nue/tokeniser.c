@@ -449,7 +449,7 @@ static Token string(Tokeniser* lexer, const char quote) {
                     case '\\': decodedChar = '\\'; break;
                     case '\'': decodedChar = '\''; break;
                     case '\"': decodedChar = '\"'; break;
-                    case '0': decodedChar = '\0'; break;
+                    case '0': decodedChar = '\0'; break; // this is unreachable anyways btw
                     case 'b': decodedChar = '\b'; break;
                     case 'f': decodedChar = '\f'; break;
                     case 'v': decodedChar = '\v'; break;
