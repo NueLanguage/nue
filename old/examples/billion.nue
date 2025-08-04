@@ -1,12 +1,12 @@
-var table time = import("time")
+private var table time = import("time")
 
 // TODO: please investigate iteration, we dont want pythonic loops
 // like what on earth is for i in range()??
 // as if we dont have a native way to specify iteration amount and increments and have to rely on a function?? lol
 private function benchmark() -> number {
-    var number startedAt = time.unix()
+    private var number startedAt = time.unix()
 
-    var number total = 0
+    private var number total = 0
     for i in 1..1000000000 {
         total += i ^ 2
     }

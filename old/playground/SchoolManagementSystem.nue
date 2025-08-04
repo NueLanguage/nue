@@ -1,14 +1,14 @@
 // Import necessary standard libraries
-var table tables = import("tables")
-var table strings = import("strings") // import the strings library since you wanted to reverse a string later on in the program
+private var table tables = import("tables")
+private var table strings = import("strings") // import the strings library since you wanted to reverse a string later on in the program
 
 // Define basic data structures for the system
-var table courses = {}
-var table students = {}
-var table faculty = {}
+private var table courses = {}
+private var table students = {}
+private var table faculty = {}
 
 // Function to add a course
-var function addCourse = function(string name, string instructor, number credits) -> boolean, string {
+private var function addCourse = function(string name, string instructor, number credits) -> boolean, string {
     if faculty[instructor] == null {
         return false, "Instructor not found"
     }
@@ -17,7 +17,7 @@ var function addCourse = function(string name, string instructor, number credits
 }
 
 // Function to enroll a student in a course
-var function enrollStudent = function(string studentId, string courseName) -> boolean, string {
+private var function enrollStudent = function(string studentId, string courseName) -> boolean, string {
     if students[studentId] == null || courses[courseName] == null {
         return false, "Invalid student ID or course name"
     }
@@ -26,19 +26,19 @@ var function enrollStudent = function(string studentId, string courseName) -> bo
 }
 
 // Initialize data
-var function initData = function() -> null {
+private var function initData = function() -> null {
     students["s1001"] = {name = "John Doe", age = 20}
     students["s1002"] = {name = "Jane Smith", age = 22}
     faculty["f1001"] = {name = "Dr. Brown", department = "Mathematics"}
     
-    var boolean status, string message = addCourse("Calculus", "f1001", 3)
+    private var boolean status, string message = addCourse("Calculus", "f1001", 3)
     if !status {
         print("Error:", message)
     }
 }
 
 // Report generation function
-var function generateReport = function() -> null {
+private var function generateReport = function() -> null {
     print("Courses and Enrollment:")
     for name, course in courses {
         print(name + ": " + course.instructor)
@@ -50,15 +50,15 @@ var function generateReport = function() -> null {
 }
 
 // Function to reverse a string using the strings library
-var function reverseString = function(string str) -> string {
+private var function reverseString = function(string str) -> string {
     return strings.reverse(str)
 }
 
 // Main program logic
-var function main = function() -> null {
+private var function main = function() -> null {
     initData()
     
-    var boolean status, string message = enrollStudent("s1001", "Calculus")
+    private var boolean status, string message = enrollStudent("s1001", "Calculus")
     if !status {
         print("Error:", message)
     }
@@ -66,10 +66,10 @@ var function main = function() -> null {
     generateReport()
 
     // Example of advanced data structure
-    var table complexData = {
+    private var table complexData = {
         numbers = {1, 2, 3, 4, 5},
         calculate = function() -> number {
-            var number sum = 0
+            private var number sum = 0
             for num in this.numbers {
                 sum += num
             }
@@ -80,7 +80,7 @@ var function main = function() -> null {
     print("Sum of numbers:", complexData.calculate())
 
     // Demonstrating string manipulation and checks
-    var string reversed = reverseString(myString)
+    private var string reversed = reverseString(myString)
     print("Reversed String:", reversed)
 
     // Dynamic type checking and response
@@ -106,9 +106,9 @@ main()
 // Additional features and functionality
 
 // Function to calculate average age of students
-var function averageAge = function() -> number {
-    var number totalAge = 0
-    var number count = 0
+private var function averageAge = function() -> number {
+    private var number totalAge = 0
+    private var number count = 0
     for student in students {
         totalAge += student.age
         count += 1
@@ -119,8 +119,8 @@ var function averageAge = function() -> number {
 print("Average age of students:", averageAge())
 
 // Function to list courses by an instructor
-var function coursesByInstructor = function(string instructorId) -> table {
-    var table instructorCourses = {}
+private var function coursesByInstructor = function(string instructorId) -> table {
+    private var table instructorCourses = {}
     for course in courses {
         if course.instructor == instructorId {
             tables.insert(instructorCourses, course)
@@ -129,15 +129,15 @@ var function coursesByInstructor = function(string instructorId) -> table {
     return instructorCourses
 }
 
-var table drBrownCourses = coursesByInstructor("f1001")
+private var table drBrownCourses = coursesByInstructor("f1001")
 print("Courses taught by Dr. Brown:")
 for course in drBrownCourses {
     print(course.name)
 }
 
 // Function to calculate total credits for a student
-var function totalCredits = function(string studentId) -> number {
-    var number credits = 0
+private var function totalCredits = function(string studentId) -> number {
+    private var number credits = 0
     for course in courses {
         if tables.contains(course.students, studentId) {
             credits += course.credits
@@ -149,7 +149,7 @@ var function totalCredits = function(string studentId) -> number {
 print("Total credits for student s1001:", totalCredits("s1001"))
 
 // Function to update student information
-var function updateStudentInfo = function(string studentId, string key, any value) -> null {
+private var function updateStudentInfo = function(string studentId, string key, any value) -> null {
     if students[studentId] != null {
         students[studentId][key] = value
     }
@@ -159,12 +159,12 @@ updateStudentInfo("s1001", "age", 21)
 print("Updated student s1001 age:", students["s1001"].age)
 
 // Demonstrating the addition of new courses and students dynamically
-var boolean courseStatus, string courseMessage = addCourse("Physics", "f1001", 4)
+private var boolean courseStatus, string courseMessage = addCourse("Physics", "f1001", 4)
 if !courseStatus {
     print("Error:", courseMessage)
 }
 
-var boolean enrollStatus, string enrollMessage = enrollStudent("s1002", "Physics")
+private var boolean enrollStatus, string enrollMessage = enrollStudent("s1002", "Physics")
 if !enrollStatus {
     print("Error:", enrollMessage)
 }
@@ -172,14 +172,14 @@ if !enrollStatus {
 generateReport()
 
 // Function to list students in a course
-var function listStudentsInCourse = function(string courseName) -> table {
+private var function listStudentsInCourse = function(string courseName) -> table {
     if courses[courseName] != null {
         return courses[courseName].students
     }
     return {}
 }
 
-var table physicsStudents = listStudentsInCourse("Physics")
+private var table physicsStudents = listStudentsInCourse("Physics")
 print("Students enrolled in Physics:")
 for studentId in physicsStudents {
     print(students[studentId].name)
@@ -187,7 +187,7 @@ for studentId in physicsStudents {
 
 // Demonstrating error handling in course addition
 //try {
-    //var boolean courseAdded, string addMessage = addCourse("Chemistry", "f9999", 3) // Invalid instructor ID
+    //private var boolean courseAdded, string addMessage = addCourse("Chemistry", "f9999", 3) // Invalid instructor ID
     //if !courseAdded {
         //logError(addMessage) // Use error() to trigger an exception if the course is not added successfully
     //}
@@ -201,7 +201,7 @@ initData()
 generateReport()
 
 // Demonstrating the removal of a student from a course
-var function removeStudentFromCourse = function(string studentId, string courseName) -> boolean, string {
+private var function removeStudentFromCourse = function(string studentId, string courseName) -> boolean, string {
     if courses[courseName] != null {
         for index, id in courses[courseName].students {
             if id == studentId {
@@ -213,7 +213,7 @@ var function removeStudentFromCourse = function(string studentId, string courseN
     return false, "Student or course not found"
 }
 
-var boolean removalStatus, string removalMessage = removeStudentFromCourse("s1001", "Calculus")
+private var boolean removalStatus, string removalMessage = removeStudentFromCourse("s1001", "Calculus")
 if !removalStatus {
     print("Error:", removalMessage)
 }

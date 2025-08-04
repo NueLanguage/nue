@@ -1,7 +1,9 @@
 # 🕸️ OLD Playground
+
 Welcome to nue's old playground. This was some playground code written during the very initial brainstorming of nue and it's syntax, etc.
 
 This code was written before breaking changes were introduced, which includes:
+
 - New way of declaring functions and their return types
 - Not sure about all of the changes, but a few breaking ones.
 

@@ -11,7 +11,7 @@
 // please view an example of this towards the end of the file
 
 
-var table mySet = {
+private var table mySet = {
 	{"John", "The John Company, Co.", 25, {day = 4, month = 10, year = 1990}},
 	{"Sandra", "The Sandra Foundation", 30, {day = 26, month = 11, year = 1991}},
 	{"Alfred", "Alfred Financing Inc.", 35, {day = 6, month = 12, year = 1992}},
@@ -22,7 +22,7 @@ var table mySet = {
 // the old, traditional method
 // not sure why you would want to do it this way
 private function eachInSet_v1() -> function {
-	var number index = 1
+	private var number index = 1
 
 	// types are explicitly defined
 	// this is also a bit inconvenient as you can tell.
@@ -31,7 +31,7 @@ private function eachInSet_v1() -> function {
 	// not only would that be memory inefficient, but it would also count as completely unnecessary processor tax
 	return function() -> boolean, string, string, number, table {
 		if index > #mySet { return false, false, "", "", 0, {} }
-		var table row = mySet[index]
+		private var table row = mySet[index]
 		index++
 		return true, row[1], row[2], row[3], row[4]
 	}
@@ -41,12 +41,12 @@ private function eachInSet_v1() -> function {
 // this one is a bit more flexible because it allows you to simply return false when you encounter the end
 // also eliminates the issues outlined in example 1
 private function eachInSet_v2() -> function {
-	var number index = 1
+	private var number index = 1
 
 	// however, as you can tell, the return types look a bit chaotic
 	return function() -> boolean, string?, string?, number?, table? {
 		if index > #mySet { return false }
-		var table row = mySet[index]
+		private var table row = mySet[index]
 		index++
 		return true, row[1], row[2], row[3], row[4]
 	}
@@ -56,14 +56,14 @@ private function eachInSet_v2() -> function {
 // this one is the most flexible
 // I, as the creator, personally use this
 private function eachInSet_v3() -> function {
-	var number index = 1
+	private var number index = 1
 
 	// a function which simply returns a boolean and the rest is variadic
 	// very convenient because we dont have to create any empty values manually, nor do we need to manually specify nullable types
 	// (removes the type chaos from example two)
 	return function() -> boolean, ... {
 		if index > #mySet { return false }
-		var table row = mySet[index]
+		private var table row = mySet[index]
 		index++
 		return true, row[1], row[2], row[3], row[4]
 	}

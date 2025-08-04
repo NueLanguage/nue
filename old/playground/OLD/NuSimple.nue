@@ -19,7 +19,7 @@ comment
 // 3.00 is the same as 3 and both are numbers.
 
 // variables and arithmetic operations
-var number myNumber = 5 + 5;
+private var number myNumber = 5 + 5;
 myNumber = 5 - 4
 myNumber = 5 * 5
 myNumber = 5 / 5

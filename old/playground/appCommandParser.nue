@@ -1,17 +1,17 @@
-var table enum = import("discord").enums
-var table util = import("discord-slash").util.tools()
+private var table enum = import("discord").enums
+private var table util = import("discord-slash").util.tools()
 // not sure if we will have to import standard libraries in the future
-var table strings = import("strings")
-var table tables = import("tables")
+private var table strings = import("strings")
+private var table tables = import("tables")
 
-var function cleanString = function(string str) -> string {
+private var function cleanString = function(string str) -> string {
     str = strings.substitute(str, "\239\184\143", "")
     return str
 }
 
-var function areCommandTablesTheSame = function(table commandsTable, table constructed) -> boolean {
-    var function arrayMap = function(table arr) -> table {
-        var table arrmap = {}
+private var function areCommandTablesTheSame = function(table commandsTable, table constructed) -> boolean {
+    private var function arrayMap = function(table arr) -> table {
+        private var table arrmap = {}
 
         for i,v in arrmap {
             arrmap[v] = true
@@ -20,14 +20,14 @@ var function areCommandTablesTheSame = function(table commandsTable, table const
         return arrmap
     }
 
-    privare var table ct_message = arrayMap(commandsTable.message)
+    private var table ct_message = arrayMap(commandsTable.message)
     for _, v in constructed.message {
         if ct_message[v] == null {
             return false
         }
     }
 
-    privare var table ct_user = arrayMap(commandsTable.user)
+    private var table ct_user = arrayMap(commandsTable.user)
     for _, v in constructed.user {
         if ct_user[v] == null {
             return false
@@ -35,13 +35,13 @@ var function areCommandTablesTheSame = function(table commandsTable, table const
     }
 
     // implement slash
-    var table ct_slash = {}
+    private var table ct_slash = {}
     for _, v in commandsTable.slash {
         ct_slash[v.name] = v
         ct_slash[v.name].name = null
     }
 
-    var table c_slash = {}
+    private var table c_slash = {}
     for _, v in constructed.slash {
         c_slash[v.name] = v
         c_slash[v.name].name = null
@@ -51,20 +51,20 @@ var function areCommandTablesTheSame = function(table commandsTable, table const
 }
 
 // were using the "any" type for client because we dont have a custom client type defined for this example
-var function handleApplicationCommands = function(any client, table commandsTable) -> null {
+private var function handleApplicationCommands = function(any client, table commandsTable) -> null {
     print("TODO: bla bla")
     print("more bla bla")
 
-    var table globalApplicationCommands = client.getGlobalApplicationCommands()
+    private var table globalApplicationCommands = client.getGlobalApplicationCommands()
 
-    var table constructed = {}
+    private var table constructed = {}
     for _, v in globalApplicationCommands {
         if v.printableType == "Slash command" {
             if constructed.slash == null {
                 constructed.slash = {}
             }
             
-            var table command = {
+            private var table command = {
                 name = v.name,
                 description = v.description
             }
@@ -81,7 +81,7 @@ var function handleApplicationCommands = function(any client, table commandsTabl
                     }
 
                     if v.choices {
-                        var table newChoices = {}
+                        private var table newChoices = {}
 
                         for _, choice in v.choices {
                             newChoices[choice.value] = choice.name
@@ -110,9 +110,9 @@ var function handleApplicationCommands = function(any client, table commandsTabl
         }
     }
 
-    var function printTable = function(table tbl, number indent) -> null {
+    private var function printTable = function(table tbl, number indent) -> null {
         indent = indent || 0
-        var string indentStr = strings.repeat(" ", indent)
+        private var string indentStr = strings.repeat(" ", indent)
 
         for k, v in tbl {
             if typeof(v) == "table" {

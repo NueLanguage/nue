@@ -4,10 +4,10 @@
 import "std" // idk how were gonna do standard libraries yet but this seems like a bad idea imo
 
 // Multi-purpose function accepting any type and performing type-specific operations
-var function analyzeInput = function(any input) -> boolean, table, [string, null] {
-    var boolean isNull = (input == null)
-    var table details = {}
-    var string description = null
+private var function analyzeInput = function(any input) -> boolean, table, [string, null] {
+    private var boolean isNull = (input == null)
+    private var table details = {}
+    private var string description = null
 
     if type(input) == "number" {
         details = {["type"] = "number", ["square"] = input ^ 2}
@@ -24,10 +24,10 @@ var function analyzeInput = function(any input) -> boolean, table, [string, null
 }
 
 // Demonstrating variable declarations
-var number myNumber = 42
-var string myString = "Hello, Nue!"
-var boolean myBoolean = true
-var table myTable = {
+private var number myNumber = 42
+private var string myString = "Hello, Nue!"
+private var boolean myBoolean = true
+private var table myTable = {
     name = "NueScript",
     version = 1.0,
     features = {"dynamic", "typed", "expressive"}
@@ -61,7 +61,7 @@ for keyPoo, valHello in myTable.features {
 }
 
 // Demonstrating the use of custom function with any type
-var boolean result, table info, [string, null] feedback = analyzeInput(3.14)
+private var boolean result, table info, [string, null] feedback = analyzeInput(3.14)
 print("Analysis Result:", result)
 print("Info Table:", info)
 if feedback != null {
@@ -69,10 +69,10 @@ if feedback != null {
 }
 
 // Using advanced data structures and control flows
-var table complexData = {
+private var table complexData = {
     numbers = {1, 2, 3, 4, 5},
     calculate = function() -> number {
-        var number sum = 0
+        private var number sum = 0
         for num in this.numbers {
             sum += num
         }
@@ -83,7 +83,7 @@ var table complexData = {
 print("Sum of numbers:", complexData.calculate())
 
 // Demonstrating string manipulation and checks
-var string reversed = reverseString(myString)
+private var string reversed = reverseString(myString)
 print("Reversed String:", reversed)
 
 // Dynamic type checking and response

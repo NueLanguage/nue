@@ -1,7 +1,7 @@
 // --------------------------------------------------
 
 // Single type variable, myInt
-var integer myInt = 2 + 3
+private var integer myInt = 2 + 3
 
 print(myInt) // 5
 print(type(myInt)) // integer
@@ -9,7 +9,7 @@ print(type(myInt)) // integer
 // --------------------------------------------------
 
 // Any type variable, myVar
-var any myVar = 69 * 420
+private var any myVar = 69 * 420
 
 print(myVar) // 28980
 print(type(myVar)) // integer
@@ -28,7 +28,7 @@ print(type(myVar)) // string
 
 // Variable with multiple possible types
 
-var [integer, boolean, null] everything // yes, you can create a blank variable with no initial variable
+private var [integer, boolean, null] everything // yes, you can create a blank variable with no initial variable
 // this means that the variable everything can be an integer, boolean, or null, but nothing else.
 // if a type other than the ones specified are attempted to be set to this variable, then an error happens
 
