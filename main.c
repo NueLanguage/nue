@@ -106,7 +106,7 @@ const char* tokenTypeString(const TokenType type) {
 
 
 
-        case TOKEN_VOID: return "VOID";
+        //case TOKEN_VOID: return "VOID";
         case TOKEN_NULL: return "NULL";
 
 
@@ -124,6 +124,9 @@ const char* tokenTypeString(const TokenType type) {
         case TOKEN_WHILE: return "WHILE";
         case TOKEN_CONTINUE: return "CONTINUE";
         case TOKEN_BREAK: return "BREAK";
+
+        case TOKEN_REPEAT: return "REPEAT";
+        case TOKEN_UNTIL: return "UNTIL";
 
         case TOKEN_RETURN: return "RETURN";
 

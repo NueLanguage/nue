@@ -68,11 +68,15 @@ typedef enum {
     TOKEN_TRUE, // boolean true
     TOKEN_FALSE, // boolean false
 
+    TOKEN_NULL,// null - dealloc from memory, absence of value
+
+    // ignore the notes below about TOKEN_VOID and TOKEN_NULL
+
     // void is the equivalent of not storing anything
     // in terms of memory consumption; null is just after "void" if we sort from lowest to highest mem usage
     // let's say it was measured in arbitrary units: null = 0, void = 1
-    TOKEN_VOID, // void - dealloc from memory, complete absence of value
-    TOKEN_NULL, // "null" keyword, type, and value
+    //TOKEN_VOID, // void - dealloc from memory, complete absence of value
+    //TOKEN_NULL, // "null" keyword, type, and value
 
     // keywords
     TOKEN_PRIVATE, TOKEN_ALIAS,
@@ -85,6 +89,9 @@ typedef enum {
     TOKEN_WHILE,
     TOKEN_CONTINUE,
     TOKEN_BREAK,
+
+    TOKEN_REPEAT,
+    TOKEN_UNTIL,
 
     TOKEN_RETURN,
 

@@ -492,7 +492,7 @@ static Token identifier(Tokeniser* lexer) {
     if (length == 4 && strncmp(lexer->start, "true", 4) == 0) return makeToken(lexer, TOKEN_TRUE, NULL);
     if (length == 5 && strncmp(lexer->start, "false", 5) == 0) return makeToken(lexer, TOKEN_FALSE, NULL);
 
-    if (length == 4 && strncmp(lexer->start, "void", 4) == 0) return makeToken(lexer, TOKEN_VOID, NULL);
+    //if (length == 4 && strncmp(lexer->start, "void", 4) == 0) return makeToken(lexer, TOKEN_VOID, NULL);
     if (length == 4 && strncmp(lexer->start, "null", 4) == 0) return makeToken(lexer, TOKEN_NULL, NULL);
 
     if (length == 7 && strncmp(lexer->start, "private", 7) == 0) return makeToken(lexer, TOKEN_PRIVATE, NULL);
@@ -508,6 +508,9 @@ static Token identifier(Tokeniser* lexer) {
     if (length == 5 && strncmp(lexer->start, "while", 5) == 0) return makeToken(lexer, TOKEN_WHILE, NULL);
     if (length == 8 && strncmp(lexer->start, "continue", 8) == 0) return makeToken(lexer, TOKEN_CONTINUE, NULL);
     if (length == 5 && strncmp(lexer->start, "break", 5) == 0) return makeToken(lexer, TOKEN_BREAK, NULL);
+
+    if (length == 6 && strncmp(lexer->start, "repeat", 6) == 0) return makeToken(lexer, TOKEN_REPEAT, NULL);
+    if (length == 5 && strncmp(lexer->start, "until", 5) == 0) return makeToken(lexer, TOKEN_UNTIL, NULL);
 
     if (length == 6 && strncmp(lexer->start, "return", 6) == 0) return makeToken(lexer, TOKEN_RETURN, NULL);
 

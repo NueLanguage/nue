@@ -459,6 +459,18 @@ while true {
 }
 // this loop basically does nothing
 
+// testing of TOKEN_REPEAT
+repeat {
+    print(1)
+} until true
+
+// output: 1
+// it only prints 1 once because it executes code first then evaluates the condition
+// the condition was true after evaluation so it immediately stopped
+
+// testing of TOKEN_UNTIL
+repeat {} until true
+
 // testing of TOKEN_RETURN
 private function returnTrue() -> boolean {
     return true
@@ -565,26 +577,32 @@ for i in 1 .. 100 step 2 {
     print(i)
 }
 
-// testing of TOKEN_VOID
-// the "void" keyword is used to denote the complete absence of a value such as a function not returning anything
+// testing of TOKEN_NULL
+// the "null" keyword is used to denote the absence of a. value
 // also used to denote deallocation of a variable
-private string deallocateMePlease = "hey there, i will be deallocated!"
-deallocateMePlease = void
+// think of it like 'nil' in Lua
+// before 2025/08/04, there used to be the 'void' token which was used instead of 'null' for deallocation
+// however I soon realised that this would make it crappy like Java or something, since we have two things
+// which literally mean nothing.
+// therefore they have been merged
+private string deallocateMePlease = "hey there, I will be deallocated!"
+deallocateMePlease = null
 
-private function printAndDontReturn(string toPrint) -> void {
+private function printAndDontReturn(string toPrint) { // you can optionally write '-> null', but this is completely unnecessary
     print(toPrint)
 }
 
-// testing of TOKEN_NULL
-// the "null" keyword is used to denote the absence of a USEFUL value
-// this can also be the TYPE keyword for a table
-// this is NOT the same as void
-// void takes up ZERO memory. null takes up a tiny bit of memory but it is negligible
 private [number, null] canHoldNumberAndNull = 9394
 print(canHoldNumberAndNull) // output: 9394
 canHoldNumberAndNull = null
 print(canHoldNumberAndNull) // output: null
 
+// to make your life easier, you can also just put a question mark at the end of something to make it nullable
+// this effectively would have been the same as the union type [number, null]
+private number? alsoCanHoldNumberAndNull = 9394
+print(alsoCanHoldNumberAndNull) // output: 9394
+alsoCanHoldNumberAndNull = null
+print(alsoCanHoldNumberAndNull) // output: null
 
 // testing of TOKEN_FUNCTION
 // this is specifically the TYPE keyword for a function
@@ -605,16 +623,16 @@ private function calculateAverage(...) -> number {
 print(calculateAverage(1, 2, 3, 4, 5)) // output: 3
 
 // testing of TOKEN_ELLIPSIS
-private function anotherFunction(...) -> void {
+private function anotherFunction(...) {
     private table things = table.pack(...)
     print(things)
 }
 
-private function callAnotherFunction(...) -> void {
+private function callAnotherFunction(...) {
     anotherFunction(...)
 }
 
-private function oneConstantArgumentAndTheRestIsUnknown(number yes, ...) -> void {
+private function oneConstantArgumentAndTheRestIsUnknown(number yes, ...) {
     anotherFunction(yes * 5, ...)
 }
 
